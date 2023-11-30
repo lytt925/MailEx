@@ -65,11 +65,12 @@ jobs:
               
       - name: scp docker-compose.yml to ec2
         run: |
-          ssh -o StrictHostKeyChecking=no -i aws_ec2.pem ${{env.EC2_ACCOUNT}} 'rm -rf ~/mailex && mkdir -p ~/mailex/backend && mkdir -p ~/mailex/frontend'
           scp -o StrictHostKeyChecking=no -i aws_ec2.pem ./nginx.conf ${{env.EC2_ACCOUNT}}:~/mailex/nginx.conf          
           scp -o StrictHostKeyChecking=no -i aws_ec2.pem ./docker-compose.yml ${{env.EC2_ACCOUNT}}:~/mailex/docker-compose.yml
+          
       - name: echo .env to ec2
         run: |
+          ssh -o StrictHostKeyChecking=no -i aws_ec2.pem ${{env.EC2_ACCOUNT}} 'mkdir -p ~/mailex/backend && mkdir -p ~/mailex/frontend'
           echo "${{ secrets.BACKEND_ENV }}" > .env.local
           scp -o StrictHostKeyChecking=no -i aws_ec2.pem .env.local ${{env.EC2_ACCOUNT}}:~/mailex/backend/.env.local
           echo "${{ secrets.FRONTEND_ENV }}" > .env.local

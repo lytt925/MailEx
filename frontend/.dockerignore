@@ -1,0 +1,28 @@
+# Dependency directories
+node_modules
+.npm
+.yarn
+
+# Build output
+.next
+dist
+
+# Version control
+.git
+.gitignore
+
+# Environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# System Files
+**/.DS_Store
+Thumbs.db
+
+# IDE directories
+.idea
+.vscode
+
+**/client_secret.json

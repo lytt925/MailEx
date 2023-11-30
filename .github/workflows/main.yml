@@ -1,0 +1,83 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: MailEx CI/CD
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "main"
+      - "dev"
+
+env:
+  EC2_ACCOUNT: ubuntu@44.217.27.217
+
+jobs:
+  push_to_registry:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push
+        run: |
+          touch ./backend/.env.local
+          touch ./frontend/.env.local
+          docker-compose -f docker-compose.yml build
+          docker-compose -f docker-compose.yml push
+
+  deploy:
+    needs: push_to_registry
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Set permissions for private key
+        run: |
+          echo "${{ secrets.AWS_EC2_PEM }}" > aws_ec2.pem
+          chmod 600 aws_ec2.pem
+          
+      - name: echo cert files
+        run: |
+          echo "${{ secrets.CERTIFICATE_CRT }}" > ./private/certificate.crt
+          echo "${{ secrets.PRIVATE_KEY }}" > ./private/private.key
+          ssh -o StrictHostKeyChecking=no -i aws_ec2.pem ${{env.EC2_ACCOUNT}} 'rm -rf ~/mailex && mkdir -p ~/mailex/private'
+          scp -o StrictHostKeyChecking=no -i aws_ec2.pem ./private/certificate.crt ${{env.EC2_ACCOUNT}}:~/mailex/private/certificate.crt
+          scp -o StrictHostKeyChecking=no -i aws_ec2.pem ./private/private.key ${{env.EC2_ACCOUNT}}:~/mailex/private/private.key
+              
+      - name: scp docker-compose.yml to ec2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i aws_ec2.pem ${{env.EC2_ACCOUNT}} 'rm -rf ~/mailex && mkdir -p ~/mailex/backend' && mkdir -p ~/mailex/frontend'
+          scp -o StrictHostKeyChecking=no -i aws_ec2.pem ./docker-compose.yml ${{env.EC2_ACCOUNT}}:~/mailex/docker-compose.yml
+      - name: echo .env to ec2
+        run: |
+          echo "${{ secrets.BACKEND_ENV }}" > .env.local
+          scp -o StrictHostKeyChecking=no -i aws_ec2.pem .env ${{env.EC2_ACCOUNT}}:~/mailex/backend/.env.local
+          echo "${{ secrets.FRONTEND_ENV }}" > .env.local
+          scp -o StrictHostKeyChecking=no -i aws_ec2.pem .env ${{env.EC2_ACCOUNT}}:~/mailex/frontend/.env.local
+
+      - name: Remove Unused Docker Images
+        run: |
+          ssh -o StrictHostKeyChecking=no -i aws_ec2.pem ${{env.EC2_ACCOUNT}} 'docker container prune -f'
+          ssh -o StrictHostKeyChecking=no -i aws_ec2.pem ${{env.EC2_ACCOUNT}} 'docker image prune -a -f'
+          ssh -o StrictHostKeyChecking=no -i aws_ec2.pem ${{env.EC2_ACCOUNT}} 'docker volume prune -f'
+        
+      - name: docker compose down
+        run: |
+          ssh -o StrictHostKeyChecking=no -i aws_ec2.pem ${{env.EC2_ACCOUNT}} 'cd ~/mailex && docker compose down || true '
+      - name: docker compose pull and up
+        run: |
+          ssh -o StrictHostKeyChecking=no -i aws_ec2.pem ${{env.EC2_ACCOUNT}} 'cd ~/mailex && docker compose pull'
+          ssh -o StrictHostKeyChecking=no -i aws_ec2.pem ${{env.EC2_ACCOUNT}} 'cd ~/mailex && docker compose up -d'

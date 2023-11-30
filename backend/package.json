@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "nodemon --env-file=.env ./src/index.js",
+    "dev": "nodemon --env-file=.env ./src/index.js",
+    "start": "node --env-file=.env ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -17,10 +19,13 @@
     "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
+    "mysql2": "^3.6.5",
     "sequelize": "^6.35.1",
-    "swagger-autogen": "^2.23.7",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }

@@ -2,18 +2,19 @@
 -- Table structure for table `country`
 --
 
-CREATE TABLE IF NOT EXISTS `country` (
-  `alpha3_code` char(3) NOT NULL,
-  `country_name` varchar(200) NOT NULL,
-  `code` char(2) DEFAULT NULL,
-  PRIMARY KEY (`alpha3_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- CREATE TABLE IF NOT EXISTS `country` (
+--   `alpha3_code` char(3) NOT NULL,
+--   `country_name` varchar(200) NOT NULL,
+--   `code` char(2) DEFAULT NULL,
+--   PRIMARY KEY (`alpha3_code`)
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `country`
 --
+use mailex;
 
-INSERT INTO `country` (`alpha3_code`, `country_name`, `code`)
+INSERT INTO `countries` (`alpha3_code`, `country_name`, `code`)
 VALUES
 ('AFG','Afghanistan','AF'),
 ('ALA','Åland','AX'),

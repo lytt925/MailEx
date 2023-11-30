@@ -1,5 +1,7 @@
-const fs = require('fs')
-const swaggerJsDoc = require('swagger-jsdoc')
+// const fs = require('fs')
+// const swaggerJsDoc = require('swagger-jsdoc')
+import fs from 'fs'
+import swaggerJsDoc from 'swagger-jsdoc'
 
 const PORT = process.env.PORT || 4000;
 const BASE_URL = process.env.BASE_URL || 'http://localhost';
@@ -22,4 +24,5 @@ const options = {
 
 const swaggerDocs = swaggerJsDoc(options)
 fs.writeFileSync('./src/swagger/swagger.json', JSON.stringify(swaggerDocs, null, 2));
-exports.swaggerDocs = swaggerDocs
+// exports.swaggerDocs = swaggerDocs
+export default swaggerDocs

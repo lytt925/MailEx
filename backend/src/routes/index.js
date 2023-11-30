@@ -1,4 +1,5 @@
-const { Router } = require('express')
+import { Router } from 'express';
+import userRouter from './user.js';
 
 
 const router = Router();
@@ -20,9 +21,9 @@ router.get('/healthcheck', (req, res) => {
   res.send('OK')
 })
 
+router.use('/user', userRouter)
 // router.use('/products', productRouter)
-// router.use('/user', userRouter)
 // router.use('/order', orderRouter)
 
 
-module.exports = router;
+export default router

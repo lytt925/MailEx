@@ -57,7 +57,7 @@ jobs:
         run: |
           echo "${{ secrets.CERTIFICATE_CRT }}" > ./private/certificate.crt
           echo "${{ secrets.PRIVATE_KEY }}" > ./private/private.key
-          ssh -o StrictHostKeyChecking=no -i aws_ec2.pem ${{env.EC2_ACCOUNT}} 'rm -rf ~/mailex && mkdir -p ~/mailex/private'
+          ssh -o StrictHostKeyChecking=no -i aws_ec2.pem ${{env.EC2_ACCOUNT}} 'sudo rm -rf ~/mailex && mkdir -p ~/mailex/private'
           scp -o StrictHostKeyChecking=no -i aws_ec2.pem ./private/certificate.crt ${{env.EC2_ACCOUNT}}:~/mailex/private/certificate.crt
           scp -o StrictHostKeyChecking=no -i aws_ec2.pem ./private/private.key ${{env.EC2_ACCOUNT}}:~/mailex/private/private.key
               

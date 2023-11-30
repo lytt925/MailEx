@@ -64,9 +64,9 @@ jobs:
       - name: echo .env to ec2
         run: |
           echo "${{ secrets.BACKEND_ENV }}" > .env.local
-          scp -o StrictHostKeyChecking=no -i aws_ec2.pem .env ${{env.EC2_ACCOUNT}}:~/mailex/backend/.env.local
+          scp -o StrictHostKeyChecking=no -i aws_ec2.pem .env.local ${{env.EC2_ACCOUNT}}:~/mailex/backend/.env.local
           echo "${{ secrets.FRONTEND_ENV }}" > .env.local
-          scp -o StrictHostKeyChecking=no -i aws_ec2.pem .env ${{env.EC2_ACCOUNT}}:~/mailex/frontend/.env.local
+          scp -o StrictHostKeyChecking=no -i aws_ec2.pem .env.local ${{env.EC2_ACCOUNT}}:~/mailex/frontend/.env.local
 
       - name: Remove Unused Docker Images
         run: |

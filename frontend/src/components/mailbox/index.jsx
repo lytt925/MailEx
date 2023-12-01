@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import { Mailcard } from "@/components/mailbox/MailCard"
+import { Mailcard } from "./MailCard"
 
 export default function Mailbox() {
   return (

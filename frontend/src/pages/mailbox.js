@@ -1,4 +1,4 @@
-import Mailbox from '@/components/mailbox'
+import Mailbox from '@/components/Mailbox'
 
 export default function MailboxPage() {
   return (

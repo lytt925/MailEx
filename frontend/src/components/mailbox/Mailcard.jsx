@@ -40,7 +40,7 @@ export function Mailcard() {
                 </div>
                 :
                 <div className="text-gray-700 dark:text-gray-300">
-                    This is a preview of the letter content. Click to expand.
+                    Test. This is a preview of the letter content. Click to expand.
                 </div>
             }
         </Card>

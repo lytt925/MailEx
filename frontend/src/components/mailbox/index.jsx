@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import { Mailcard } from "./MailCard"
+import { Mailcard } from "@/components/Mailbox/Mailcard"
 
 export default function Mailbox() {
   return (
@@ -17,18 +17,6 @@ export default function Mailbox() {
           <h1 className="text-3xl font-bold">Your Mails</h1>
           <div className="space-y-4">
             <Mailcard />
-            {/* <Card className="p-4 flex flex-col bg-white">
-              <div className="flex justify-between items-center mb-2">
-                <div className="flex items-center space-x-4">
-                  <Image alt="User Image" src="/avatar.png" height={40} width={40} className="rounded-full" />
-                  <div className="font-medium">John Doe</div>
-                </div>
-                <Badge className="bg-[#D4AF37] text-white">New</Badge>
-              </div>
-              <div className="text-gray-700 dark:text-gray-300">
-                This is a preview of the letter content. Click to expand.
-              </div>
-            </Card> */}
             <Card className="p-4 flex flex-col bg-white">
               <div className="flex justify-between items-center mb-2">
                 <div className="flex items-center space-x-2">

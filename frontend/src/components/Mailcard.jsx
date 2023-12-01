@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Card } from "../ui/card"
-import { Badge } from "../ui/badge"
+import { Card } from "./ui/card"
+import { Badge } from "./ui/badge"
 import Image from 'next/image'
 
 export function Mailcard() {

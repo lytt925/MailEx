@@ -1,11 +1,11 @@
 import { Homepage } from '@/components/Homepage/index'
-import { Mailbox } from '@/components/Mailbox/index'
+import { Mailboxs } from '@/components/Mailboxs/index'
 
 export default function MainPage() {
   return (
     <>
       <Homepage />
-      <Mailbox />
+      <Mailboxs />
     </>
   )
 }

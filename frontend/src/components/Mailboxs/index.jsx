@@ -5,7 +5,7 @@
 // import { Button } from "@/components/ui/button"
 // import { Mailcard } from "@/components/Mailcard"
 
-export function Mailbox() {
+export function Mailboxs() {
   return (
     (<div key="1" className="lg:grid lg:grid-cols-2 h-screen">
       {/* <div className="dark:bg-[#3D3D3D] h-full overflow-auto">

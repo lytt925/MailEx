@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Mailcard } from "@/components/Mailcard"
 
-export default function Mailbox() {
+export function Mailbox() {
   return (
     (<div key="1" className="lg:grid lg:grid-cols-2 h-screen">
       <div className="dark:bg-[#3D3D3D] h-full overflow-auto">
@@ -26,15 +26,11 @@ export default function Mailbox() {
                 <Badge className="bg-[#D4AF37] text-white">New</Badge>
               </div>
               <div className="text-gray-700 dark:text-gray-300">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor,
-                dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula
-                massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est
-                eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae,
-                consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor. Cras
-                vestibulum bibendum augue. Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed
-                dui ut augue blandit sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere
-                cubilia Curae; Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. Maecenas adipiscing ante
-                non diam sodales hendrerit.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam, possimus harum id impedit voluptas rerum vitae, corporis iste voluptate molestias et unde minus dolorem doloremque dolorum earum quibusdam at similique?
+                Amet quibusdam ipsa, porro, consequuntur necessitatibus reprehenderit maiores corporis tempora sint quisquam nisi possimus deleniti, fugiat atque alias praesentium dolor eum doloremque reiciendis et impedit placeat dolorum temporibus voluptatum? Beatae.
+                Dolorem in aperiam libero, molestias ullam repellat corrupti saepe alias debitis pariatur perferendis amet iusto eius cumque voluptatum modi deserunt sint eveniet iste. Accusamus unde sequi nihil eaque, consectetur mollitia.
+                Obcaecati sunt unde delectus sapiente accusamus rem, tenetur aut ad incidunt consequuntur, ullam quisquam quo. Eius, expedita! Explicabo, optio mollitia! Tempora voluptates provident dignissimos blanditiis quae totam quas sint odio?
+                Culpa fugiat voluptatibus consequatur laudantium sunt. Odit quam maiores corporis, fugit veniam vitae exercitationem, voluptatum officiis id amet iste cupiditate voluptatibus. Ea enim quasi rerum quos sequi, in libero mollitia.
               </div>
             </Card>
           </div>

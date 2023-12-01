@@ -12,6 +12,7 @@ const HomepageWrapper = styled.section`
 
 const ContentWrapper = styled.div`
   max-width: 100%;
+  width: 900px;
   display: grid;
   gap: 1rem/* 16px */;
   padding-left: 1rem/* 16px */;
@@ -34,6 +35,10 @@ export function Homepage() {
           type="search"
           InputProps={{
             // startAdornment: <InputAdornment position="start">kg</InputAdornment>,
+          }}
+          sx={{
+            width: '100%',
+            maxWidth: '100%'
           }}
         />
       </ContentWrapper>

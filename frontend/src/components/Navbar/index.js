@@ -5,8 +5,12 @@ import styled from 'styled-components';
 export const Navbar = () => {
   return (
     <NavbarWrapper>
-      <ProfileIcon />
-      <MailIcon />
+      <ExploreLink href={'/'}>
+        <ProfileIcon />
+      </ExploreLink>
+      <Link href={'/mailbox'} >
+        <MailIcon />
+      </Link>
       <ExploreLink href={'/'}>
         Explore
       </ExploreLink>

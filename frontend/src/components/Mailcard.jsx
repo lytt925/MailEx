@@ -23,7 +23,7 @@ export function Mailcard() {
                 </div>
                 <Badge className="bg-[#D4AF37] text-white">New</Badge>
             </div>
-            dasfsaf
+            73847239847298
             {/* Conditionally render the expanded content */}
             {isExpanded ?
                 <div className="text-gray-700 dark:text-gray-300">

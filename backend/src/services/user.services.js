@@ -1,74 +1,57 @@
-import { User } from '../models/user.model.js';
+import db from '../db.js'
 
 async function createUser(userData) {
+  const { username, email, provider, password } = userData;
   try {
-    const newUser = await User.create(userData);
-    const data = newUser.toJSON();
-    return data;
+    const [result] = await db.execute(
+      'INSERT INTO users (username, email, password, provider) VALUES (?, ?, ?, ?)',
+      [username, email, password, provider]
+    );
+
+    const { insertId } = result;
+    return { id: insertId, provider, username, email };
   } catch (error) {
     console.error('Error creating new user:', error);
-    throw error;  // or handle it as per your application's needs
-  }
-}
-
-const getUserByEmail = async (email) => {
-  try {
-    const user = await User.findOne({ where: { email: email } });
-    return user;
-  } catch (error) {
     throw error;
   }
 }
 
-const getUserById = async (id) => {
-  try {
-    const user = await User.findByPk(id);
-    return user;
-  } catch (error) {
-    throw error;
-  }
-}
 
-const getUsers = async () => {
+const getUserByEmailorUsername = async (email, username, attributes = null) => {
   try {
-    const users = await User.findAll();
-    return users;
-  } catch (error) {
-    throw error;
-  }
-}
+    let query;
+    let queryParams = [];
 
-const updateUser = async (id, user) => {
-  try {
-    const userToUpdate = await User.findByPk(id);
-    if (userToUpdate) {
-      await userToUpdate.update(user);
-      return userToUpdate;
+    // Construct the SELECT part of the query based on provided attributes
+    if (attributes && attributes.length > 0) {
+      const fields = attributes.join(', ');
+      query = `SELECT ${fields} FROM users WHERE `;
+    } else {
+      query = 'SELECT * FROM users WHERE ';
     }
-    return null;
-  } catch (error) {
-    throw error;
-  }
-}
 
-const deleteUser = async (id) => {
-  try {
-    const userToDelete = await User.findByPk(id);
-    if (userToDelete) {
-      await userToDelete.destroy();
-      return userToDelete;
+    // Add the appropriate condition based on email or username
+    if (email) {
+      query += 'email = ?';
+      queryParams.push(email);
+    } else if (username) {
+      query += 'username = ?';
+      queryParams.push(username);
     }
-    return null;
+
+    const [rows] = await db.execute(query, queryParams);
+
+    if (rows.length === 0) {
+      return null;
+    }
+
+    return rows[0];
   } catch (error) {
     throw error;
   }
-}
+};
 
 export default {
   createUser,
-  getUserByEmail,
-  getUserById,
-  getUsers,
-  updateUser,
-  deleteUser
+  getUserByEmailorUsername,
 }

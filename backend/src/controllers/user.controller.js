@@ -1,70 +1,100 @@
+import bcrypt from 'bcrypt';
 import userService from '../services/user.services.js';
 import hashPassword from '../helper/hashPassword.js';
+import { generateAccessToken } from '../helper/jwt.js';
 
-// Example usage
-// createUser({
-//   username: 'john_doe',
-//   email: 'john.doe@example.com',
-//   password_hash: 'hashed_password_here',
-// }).then(user => console.log('User created:', user))
-// .catch(error => console.error('Error:', error));
+
+const generateSigninResponse = (user) => {
+  if (user) {
+    const { token, expiresIn } = generateAccessToken(user);
+    const response = {
+      "access_token": token,
+      "access_expired": expiresIn,
+      user
+    }
+    return response
+  }
+}
 
 const signupUser = async (req, res) => {
   const { username, email, password, provider } = req.body
 
   // check if user exists
-  const existUser = await userService.getUserByEmail(email);
-  console.log(existUser);
+  const existUser = await userService.getUserByEmailorUsername(email, null, ['id']);
   if (existUser) {
     return res.status(409).send({ error: "User already exists" })
   }
 
   try {
     const hash = await hashPassword(password);
-    const results = await userService.createUser({ username, email, password: hash, provider });
-    res.status(201).send(results);
+    const user = await userService.createUser({ username, email, password: hash, provider });
+    // Create the access token
+    const response = generateSigninResponse(user);
+    return res.status(200).send(response)
   } catch (error) {
+    console.log(error)
     res.status(500).json({ error: error.message });
   }
 }
 
-// const signupUser = async (req, res) => {
-//   const { name, email, password } = req.body
-//   // check if user exists
-//   const existUser = await UsersTable.getUserByEmail(email)
-//   if (existUser.length > 0) {
-//     return res.status(409).send({ error: "User already exists" })
-//   }
+const loginUser = async (req, res) => {
+  const { username, email, password, provider } = req.body;
 
-//   try {
-//     const hash = await bcrypt.hash(password, 10);
-//     const result = await UsersTable.insertUser({ name, email, hash })
-//     const user = {
-//       id: result.insertId,
-//       provider: 'native',
-//       name: name,
-//       email: email,
-//       picture: `https://ui-avatars.com/api/?name=${name}&background=random`,
-//     }
+  try {
+    if (provider !== "native" && !email && !username) {
+      return res.status(400).send({ error: "invalid request" });
+    }
 
-//     // Create the access token
-//     const { token, expiresIn } = generateAccessToken(user);
-//     // Create the response object
-//     const response = {
-//       data: {
-//         access_token: token,
-//         access_expired: expiresIn,
-//         user,
-//       },
-//     };
-//     return res.status(200).send(response)
-//   } catch (err) {
-//     console.log(err)
-//     return res.status(500).send({ error: "Internal Server Error" })
-//   }
-// }
+    if (provider === "native" && !password) {
+      return res.status(400).send({ error: "password required" });
+    }
 
+    // find the user by email or password
+    let user = null;
+    if (email) {
+      user = await userService.getUserByEmailorUsername(
+        email,
+        null,
+        ['id', 'provider', 'email', 'username', 'password']
+      );
+      // console.log("login", user)
+      if (!user) {
+        return res.status(403).send({ error: "email not found" });
+      }
+    } else if (username) {
+      user = await userService.getUserByEmailorUsername(
+        null,
+        username,
+        ['id', 'provider', 'email', 'username', 'password']
+      );
+      // console.log("login", user)
+      if (!user) {
+        return res.status(403).send({ error: "username not found" });
+      }
+    }
+
+    // Authentication
+    const result = await bcrypt.compare(password, user.password);
+    if (result) {
+      user = {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        provider: 'native',
+      };
+      const response = generateSigninResponse(user)
+      return res.status(200).send(response)
+    } else {
+      return res.status(403).send({ error: "wrong password" });
+    }
+
+  } catch (err) {
+    console.log(err)
+    return res.status(500).send({ error: "Internal Server Error" })
+  }
+}
 
 export default {
-  signupUser
+  signupUser,
+  loginUser,
 }

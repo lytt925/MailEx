@@ -8,12 +8,39 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      fontFamily: {
+        'baloo': ['Baloo Paaji 2', 'cursive'],
+        'sans': ['Noto Sans TC', 'sans-serif'],
       },
+      colors: {
+        backup: {
+          'grey': '#F5F1ED',
+          'dark-brown': '#8b4513',
+          'light-brown': '#F5DEB3',
+          'light-yellow': '#fefae0',
+          'light-green': '#ccd5ae',
+          'white': '#fffaf0',
+        },
+        app: {
+          'grey': '#F5F1ED',
+          'dark-brown': '#000000',
+          'primary': '#f5b53d', // HSV(39°, 75%, 96%)
+          'secondary': '#f5cc7f',
+          'pale-primary': '#f5eddf',
+          'light-green': '#ccd5ae',
+          'white': '#fffaf0',
+        }
+      },
+      screens: {
+        '2xs': '375px',
+        'xs': '475px',
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1536px',
+      }
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require('tailwind-scrollbar')],
 }

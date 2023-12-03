@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import userRouter from './user.js';
+import mailRouter from './mail.js';
 
 
 const router = Router();
@@ -22,7 +23,7 @@ router.get('/healthcheck', (req, res) => {
 })
 
 router.use('/user', userRouter)
-// router.use('/products', productRouter)
+router.use('/mail', mailRouter)
 // router.use('/order', orderRouter)
 
 

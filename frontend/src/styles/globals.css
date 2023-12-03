@@ -2,11 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* :root {
+
+:root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-} */
+}
 
 /* @media (prefers-color-scheme: dark) {
   :root {
@@ -16,9 +17,25 @@
   }
 } */
 
-/* body {
-  color: rgb(var(--foreground-rgb));
+body {
+  /* color: rgb(var(--foreground-rgb));
   background: linear-gradient(to bottom,
       transparent,
-      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
-} */
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb)); */
+
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  min-height: 100vh;
+  margin: 0;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus,
+input:-internal-autofill-selected  {
+  background-color: none;
+}
+
+
+.h-custom {
+  height: calc(100vh - 64px);
+}

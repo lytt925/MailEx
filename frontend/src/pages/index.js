@@ -1,12 +1,8 @@
-import { Homepage } from '@/components/Homepage/index'
-import { Mailboxs } from '@/components/Mailboxs/index'
+import { Homepage } from '@/components/Homepage'
 
 export default function MainPage() {
   return (
-    <>
-      <Homepage />
-      <Mailboxs />
-    </>
+    <Homepage />
   )
 }
 

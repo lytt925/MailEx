@@ -29,7 +29,7 @@ jobs:
         run: |
           touch ./backend/.env.local
           touch ./frontend/.env.local
-          docker-compose -f docker-compose.yml build
+          docker-compose -f docker-compose.yml build --no-cache
           docker-compose -f docker-compose.yml push
 
   deploy:

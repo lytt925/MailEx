@@ -9,7 +9,7 @@ import cors from 'cors'
 import swaggerUi from 'swagger-ui-express'
 import indexRouter from './routes/index.js'
 import swaggerDocs from './swagger/swagger.js'
-import db from './models/db.js'
+import db from './db.js'
 
 
 const PORT = process.env.PORT || 4000;
@@ -33,17 +33,6 @@ app.use(`${apiPath}/docs`,
   swaggerUi.setup(swaggerDocs)
 )
 
-const startServer = async () => {
-  try {
-    await db.authenticate();
-    console.log('Connected to the database.');
-    app.listen(PORT, () => {
-      console.log(`Listening on ${BASE_URL}:${PORT}`);
-    });
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
-}
-
-startServer()
-
+app.listen(PORT, () => {
+  console.log(`Listening on ${BASE_URL}:${PORT}`);
+});

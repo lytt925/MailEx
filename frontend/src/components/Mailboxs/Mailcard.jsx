@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Card } from "./ui/card"
-import { Badge } from "./ui/badge"
+import { Card } from "../ui/card"
+import { Badge } from "../ui/badge"
 import Image from 'next/image'
 
 export function Mailcard() {
@@ -23,8 +23,6 @@ export function Mailcard() {
                 </div>
                 <Badge className="bg-[#D4AF37] text-white">New</Badge>
             </div>
-            73847239847298
-            {/* Conditionally render the expanded content */}
             {isExpanded ?
                 <div className="text-gray-700 dark:text-gray-300">
                     This is the expanded content. Click to collapse. Lorem ipsum dolor sit amet consectetur adipisicing elit. Non ab, placeat reprehenderit possimus voluptatibus quae eligendi, dicta laudantium autem magni aut totam eveniet expedita. Doloremque earum odit libero ratione deserunt?

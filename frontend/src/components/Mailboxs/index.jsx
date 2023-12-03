@@ -1,14 +1,14 @@
-// import { Avatar } from "@/components/ui/avatar"
-// import { Badge } from "@/components/ui/badge"
-// import { Card } from "@/components/ui/card"
-// import { Textarea } from "@/components/ui/textarea"
-// import { Button } from "@/components/ui/button"
-// import { Mailcard } from "@/components/Mailcard"
+import { Avatar } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import { Card } from "@/components/ui/card"
+import { Textarea } from "@/components/ui/textarea"
+import { Button } from "@/components/ui/button"
+import { Mailcard } from "../Mailboxs/Mailcard"
 
 export function Mailboxs() {
   return (
     (<div key="1" className="lg:grid lg:grid-cols-2 h-screen">
-      {/* <div className="dark:bg-[#3D3D3D] h-full overflow-auto">
+      <div className="dark:bg-[#3D3D3D] h-full overflow-auto">
         <div className="p-6 space-y-6">
           <h1 className="text-3xl font-bold">Your Mails</h1>
           <div className="space-y-4">
@@ -38,7 +38,7 @@ export function Mailboxs() {
           <Textarea className="w-full h-96" placeholder="Write your letter here..." />
           <Button className="w-full">Send Letter</Button>
         </div>
-      </div> */}
+      </div>
     </div>)
   );
 }

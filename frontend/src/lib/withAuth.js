@@ -5,7 +5,7 @@ import { useUser } from '@/hooks/useUserContext';
 import { jwtDecode } from 'jwt-decode';
 
 const withAuth = (WrappedComponent) => {
-  return (props) => {
+  function WithAuthComponent(props) {
     const { user, token } = useUser();
     const router = useRouter();
     useEffect(() => {
@@ -33,9 +33,29 @@ const withAuth = (WrappedComponent) => {
         }
         router.push('/login');
       }
-    }, []);
+    }, [router]);
     return <WrappedComponent {...props} user={user} token={token} />;
   };
+
+  const wrappedComponentName = WrappedComponent.displayName
+    || WrappedComponent.name
+    || 'Component';
+
+  withAuth.displayName = `withAuth(${wrappedComponentName})`;
+  return WithAuthComponent;
 };
 
 export default withAuth;
+
+// export default function withFoo(WrappedComponent) {
+//   function WithFoo(props) {
+//     return <WrappedComponent {...props} foo />;
+//   }
+
+//   const wrappedComponentName = WrappedComponent.displayName
+//     || WrappedComponent.name
+//     || 'Component';
+
+//   WithFoo.displayName = `withFoo(${wrappedComponentName})`;
+//   return WithFoo;
+// }

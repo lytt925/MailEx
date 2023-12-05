@@ -42,8 +42,6 @@ export const UserProvider = ({ children }) => {
         });
       }
     }
-    console.log('user:', user);
-    console.log('token:', token);
   }, []);
 
   // Step 4: Pass User Data and Functions to Change It to the Context

@@ -1,0 +1,34 @@
+/* 
+:global(.customQuill) .ql-editor {
+    padding: 0;
+    font-size: 1rem;
+} */
+
+/* styles.module.css */
+.editorContainer {
+    /* This class doesn't need to have any specific styles. */
+    /* It's just a local identifier for your Quill editor container. */
+}
+
+/* styles.module.css */
+.editorContainer :global(.ql-editor) {
+    padding-left: 4px;
+    font-size: 1rem;
+}
+.editorContainer :global(.ql-toolbar) {
+    /* padding: 0; */
+    /* border: none; */
+}
+
+.editorContainer :global(.ql-container) {
+    padding: 0;
+    border: none;
+}
+
+.editorContainer :global(.ql-blank::before) {
+    left: 3px;
+    top: 13px;
+}
+
+
+

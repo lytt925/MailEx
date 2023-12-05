@@ -14,10 +14,9 @@ export const Navbar = () => {
   const menuRef = useRef(); // Reference for the menu element
   const [isUserMenuExpanded, setIsUserMenuExpanded] = useState(false);
   const { user: { userId, username, email }, setUser, logout } = useUser();
-  const isLogin = userId !== '';
   const closeMenu = () => setIsUserMenuExpanded(false);
   const toggleMenu = () => {
-    if (!isLogin) {
+    if (userId === '') {
       router.push('/login')
     }
     setIsUserMenuExpanded(!isUserMenuExpanded);
@@ -32,58 +31,65 @@ export const Navbar = () => {
   }
 
   return (
-    <nav className="bg-app-primary">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-center sm:justify-between h-[64px] mx-auto px-8 py-4">
-        <Link href={'/'} className='flex flex-1 items-center h-8 align-middle justify-center sm:justify-start'>
-          <span className={`${baloo.className} pt-1 text-app-dark-brown font-bold text-[36px] align-middle px-6 tracking-wider`}>MailEx</span>
-        </Link>
-        <div className="relative items-center justify-between hidden w-full sm:flex sm:w-auto sm:px-8" id="navbar-user">
-          <ul className="flex flex-col font-medium p-4 sm:p-0 mt-4 border sm:space-x-8 sm:flex-row sm:mt-0 sm:border-0">
-            <Link className="group relative flex justify-center items-center text-app-dark-brown font-bold tracking-wide" href={'/mailbox'}>
-              <div className='absolute h-10 w-10 rounded-full group-hover:bg-app-secondary' ></div>
-              <IconMailoutline className="z-10 text-app-dark-brown text-2xl" />
-            </Link>
-            <Link className="group relative flex justify-center items-center text-app-dark-brown font-bold tracking-wide" href={'/'}>
-              <div className='absolute h-10 w-10 rounded-full group-hover:bg-app-secondary' ></div>
-              <FiGlobe className='z-10' size={'24px'} />
-            </Link>
-            <div className="group relative flex justify-center items-center text-app-dark-brown font-bold tracking-wide cursor-pointer">
-              <div className='absolute h-10 w-10 rounded-full group-hover:bg-app-secondary' ></div>
-              <FaRegUserCircle className="z-10" size={'24px'} onClick={toggleMenu} />
+    <>
+      <nav className="">
+        <div className="max-w-screen-xl flex flex-wrap items-center justify-center sm:justify-between h-[64px] mx-auto px-8 py-4"></div>
+      </nav >
+      <nav className="bg-app-primary shadow-md h-[64px] fixed w-screen z-10">
+        <div className="max-w-screen-xl flex flex-wrap items-center justify-center sm:justify-between h-[64px] mx-auto px-8 py-4">
+          <Link href={'/'} className='flex flex-1 items-center h-8 align-middle justify-center sm:justify-start'>
+            <span className={`${baloo.className} pt-1 text-app-content font-bold text-[36px] align-middle px-6 tracking-wider`}>
+              MailEx
+            </span>
+          </Link>
+          <div className="relative items-center justify-between hidden w-full sm:flex sm:w-auto sm:px-8" id="navbar-user">
+            <ul className="flex flex-col font-medium p-4 sm:p-0 mt-4 border sm:space-x-8 sm:flex-row sm:mt-0 sm:border-0">
+              <Link href={userId !== '' ? '/mailbox' : '/login'} className="group relative flex justify-center items-center text-app-content font-bold tracking-wide" >
+                <div className='absolute h-10 w-10 rounded-full group-hover:bg-app-primary-light' ></div>
+                <IconMailoutline className="z-10 text-app-content text-2xl" />
+              </Link>
+              <Link className="group relative flex justify-center items-center text-app-content font-bold tracking-wide" href={'/'}>
+                <div className='absolute h-10 w-10 rounded-full group-hover:bg-app-primary-light' ></div>
+                <FiGlobe className='z-10' size={'24px'} />
+              </Link>
+              <div className="group relative flex justify-center items-center text-app-content font-bold tracking-wide cursor-pointer">
+                <div className='absolute h-10 w-10 rounded-full group-hover:bg-app-primary-light' ></div>
+                <FaRegUserCircle className="z-10" size={'24px'} onClick={toggleMenu} />
+              </div>
+            </ul>
+            <div ref={menuRef} className={`${isUserMenuExpanded ? '' : 'hidden'} absolute right-8 top-4 flex items-center space-x-3 md:space-x-0`}>
+              {/* <!-- Dropdown menu --> */}
+              {userId !== '' ? (
+                <div className="z-50 my-4 text-base bg-white list-none divide-y divide-gray-100 rounded shadow" id="user-dropdown">
+                  <div className="px-4 py-3">
+                    <span className="block text-sm text-gray-900 ">{username}</span>
+                    {/* <span className="block text-sm  text-gray-500 truncate">name@flowbite.com</span> */}
+                  </div>
+                  <ul className="py-2" aria-labelledby="user-menu-button">
+                    <li>
+                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200">Profile</a>
+                    </li>
+                    <li>
+                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200">Settings</a>
+                    </li>
+                    <li>
+                      <div onClick={handleLogout} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200">
+                        Log Out
+                      </div>
+                    </li>
+                  </ul>
+                </div>) :
+                null
+              }
             </div>
-          </ul>
-          <div ref={menuRef} className={`${isUserMenuExpanded ? '' : 'hidden'} absolute right-8 top-4 flex items-center space-x-3 md:space-x-0`}>
-            {/* <!-- Dropdown menu --> */}
-            {isLogin ? (
-              <div className="z-50 my-4 text-base bg-white list-none divide-y divide-gray-100 rounded shadow" id="user-dropdown">
-                <div className="px-4 py-3">
-                  <span className="block text-sm text-gray-900 ">{username}</span>
-                  {/* <span className="block text-sm  text-gray-500 truncate">name@flowbite.com</span> */}
-                </div>
-                <ul className="py-2" aria-labelledby="user-menu-button">
-                  <li>
-                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200">Profile</a>
-                  </li>
-                  <li>
-                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200">Settings</a>
-                  </li>
-                  <li>
-                    <div onClick={handleLogout} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200">
-                      Log Out
-                    </div>
-                  </li>
-                </ul>
-              </div>) :
-              null
-            }
           </div>
-        </div>
-        {/* <button type="button" className="flex text-sm bg-gray-100 rounded-full md:me-0 focus:ring-4 focus:ring-app-primary" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+          {/* <button type="button" className="flex text-sm bg-gray-100 rounded-full md:me-0 focus:ring-4 focus:ring-app-primary" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
           <span className="sr-only">Open user menu</span>
           <img className="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="user photo" />
         </button> */}
-      </div>
-    </nav>
+        </div>
+      </nav>
+    </>
 
   )
 }

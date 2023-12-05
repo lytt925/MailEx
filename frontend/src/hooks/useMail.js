@@ -2,19 +2,22 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from '../axios';
 
 const fetchMails = async (paging) => {
-  const actions = query ? 'search' : 'category'
-
   try {
-    if (actions === 'category') {
-      const { data } = await axios.get(`/mail`, { params: { paging } });
-      return data;
-    }
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+    };
+    const { data } = await axios.get(`/mail`, {
+      params: { paging },
+      headers: headers
+    });
+    return data;
   } catch (error) {
     console.error(error);
   }
 }
 
-export const useFeeds = () => {
+export const useMails = (userId) => {
   const {
     status,
     data,
@@ -24,10 +27,11 @@ export const useFeeds = () => {
     hasNextPage,
     dataUpdatedAt
   } = useInfiniteQuery({
-    queryKey: [category, query],
-    queryFn: ({ pageParam }) => fetchProducts(query, category, pageParam),
+    queryKey: ['mails', userId],
+    queryFn: ({ pageParam }) => fetchMails(pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage?.next_paging ?? undefined,
+    enabled: !!userId,
   })
 
 

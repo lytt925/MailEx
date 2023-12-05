@@ -51,7 +51,48 @@ const getUserByEmailorUsername = async (email, username, attributes = null) => {
   }
 };
 
+
+const getFriendsById = async (id) => {
+  const query = `
+  SELECT DISTINCT u.id, u.username, u.profile_content 
+  FROM users u
+  JOIN mails m ON u.id = m.sender_id OR u.id = m.receiver_id
+  WHERE (m.sender_id = ? OR m.receiver_id = ?)
+  AND u.id != ?`;
+
+  try {
+    const [rows] = await db.execute(
+      query,
+      [id, id, id]
+    );
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// no private data
+const getFriendProfileById = async (id) => {
+  const query = `
+  SELECT DISTINCT u.id, u.username, u.profile_content 
+  FROM users u
+  WHERE u.id = ?`;
+
+  try {
+    const [rows] = await db.execute(
+      query,
+      [id]
+    );
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+
+}
+
 export default {
   createUser,
   getUserByEmailorUsername,
+  getFriendsById,
+  getFriendProfileById
 }

@@ -9,9 +9,9 @@ export function LoginPanel() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false); // For controlling button state
-    const { user: { userId }, setUser } = useUser();
-    const isLogin = userId !== '';
-    if (isLogin) {
+    const [isLoginFailed, setIsLoginFailed] = useState(false); // For controlling button state
+    const { user: { userId }, setUser, setToken } = useUser();
+    if (userId !== '') {
         router.push('/');
     }
 
@@ -36,8 +36,8 @@ export function LoginPanel() {
                     password,
                     provider: 'native'
                 })
-            console.log('response', data);
             localStorage.setItem('jwt', data.access_token);
+            setToken(data.access_token);
             const userResponse = {
                 userId: data.user.id,
                 username: data.user.username,
@@ -47,9 +47,10 @@ export function LoginPanel() {
             setUser(userResponse);
         } catch (error) {
             console.error('Login failed:', error);
+            setIsLoginFailed(true);
         } finally {
             setIsLoading(false);
-            router.push('/');
+            // router.push('/');
         }
     };
 
@@ -93,15 +94,15 @@ export function LoginPanel() {
                                 disabled={isLoading}
                             />
                         </div>
-
-                        <div className="text-right mt-2">
-                            <a href="#" className="text-sm font-semibold text-gray-700 hover:text-app-primary focus:text-app-primary">
+                        <div className="flex flex-row-reverse mt-2">
+                            <a href="#" className="text-right flex-1 text-sm font-semibold text-gray-700 hover:text-app-primary focus:text-app-primary">
                                 Forgot Password?
                             </a>
+                            {isLoginFailed ? <p className="text-xs font-semibold text-red-500">Wrong Password!</p> : null}
                         </div>
 
-                        <button type="submit" disabled={isLoading} className="h-14 flex items-center justify-center w-full bg-app-primary hover:bg-app-secondary focus:bg-app-secondary text-white font-semibold rounded-lg px-4 py-3 mt-6">
-                            {isLoading ? <CircularProgress color="white" size={'2rem'} /> : 'Log In'}
+                        <button type="submit" disabled={isLoading} className="text-app-content h-14 flex items-center justify-center w-full bg-app-primary hover:bg-app-primary-light focus:bg-app-primary-light font-semibold rounded-lg px-4 py-3 mt-6">
+                            {isLoading ? <CircularProgress sx={{ color: 'black' }} size={'2rem'} /> : 'Log In'}
                         </button>
 
                     </form>
@@ -116,7 +117,7 @@ export function LoginPanel() {
                     </button>
 
                     <p className="mt-8">Need an account? &nbsp;
-                        <a href="#" className="text-app-primary hover:text-app-secondary font-semibold">
+                        <a href="#" className="text-app-primary hover:text-app-primary-light font-semibold">
                             Create an account
                         </a>
                     </p>

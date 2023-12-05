@@ -40,15 +40,15 @@
  *             - sending
  *           default: 'draft'
  *           description: Status of the mail.
- *         createdAt:
+ *         created_at:
  *           type: string
  *           format: date-time
  *           description: The date and time when the mail was created.
- *         updatedAt:
+ *         updated_at:
  *           type: string
  *           format: date-time
  *           description: The date and time when the mail was updated.
- *         sentAt:
+ *         sent_at:
  *           type: string
  *           format: date-time
  *           description: The date and time when the mail was sent.

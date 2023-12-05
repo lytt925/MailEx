@@ -94,7 +94,23 @@ const loginUser = async (req, res) => {
   }
 }
 
+
+const getFriends = async (req, res) => {
+  const userId = req.tokenPayload.id
+  try {
+    const friends = await userService.getFriendsById(userId);
+    const response = {
+      friends: friends
+    }
+    return res.status(200).send(response)
+  } catch (error) {
+    console.log(error)
+    return res.status(500).send({ error: "Internal Server Error" })
+  }
+}
+
 export default {
   signupUser,
   loginUser,
+  getFriends
 }

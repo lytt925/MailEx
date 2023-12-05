@@ -17,7 +17,7 @@ const router = Router();
  *     tags:
  *       - Mail
  *     summary: Get user's mail
- *     description: Get the user profile using access token
+ *     description: Get the user's mail using access token
  *     security:
  *       - BearerAuth: []
  *     parameters:
@@ -62,7 +62,7 @@ const router = Router();
  *                   description: server error message
  *                   example: Internal server error
  */
-router.get('/', jwtAuthentication, mailController.getMyMail);
+router.get('/', jwtAuthentication, mailController.getAllMail);
 
 
 
@@ -73,8 +73,8 @@ router.get('/', jwtAuthentication, mailController.getMyMail);
  *   post:
  *     tags:
  *       - Mail
- *     summary: Get user's mail
- *     description: Get the user profile using access token
+ *     summary: Create a mail
+ *     description: Create a mail using access token
  *     security:
  *       - BearerAuth: []
  *     requestBody:
@@ -151,5 +151,68 @@ router.get('/', jwtAuthentication, mailController.getMyMail);
  *                   example: Internal server error
  */
 router.post('/', jwtAuthentication, mailController.createMail);
+
+
+/**
+ * @swagger
+ * /mail/{friendId}:
+ *   get:
+ *     tags:
+ *       - Mail
+ *     summary: Get user's mail associated with a friend
+ *     description: Get the user's mail associated with a friend using access token
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: friendId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the friend
+ *       - in: query
+ *         name: paging
+ *         required: false
+ *         description: "Paging for request next page."
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Get user profile successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 friend_profile: 
+ *                   $ref: '#/components/schemas/User'
+ *                 mails:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Mail'
+ *       400:
+ *         description: "Client Error"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: client error message
+ *                   example: Invalid token
+ *       500:
+ *         description: "Server Error"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: server error message
+ *                   example: Internal server error
+ */
+router.get('/:friendId', jwtAuthentication, mailController.getMailByFriendId);
 
 export default router

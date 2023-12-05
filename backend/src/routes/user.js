@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import userController from '../controllers/user.controller.js'
+import jwtAuthentication from '../middleware/jwtAuthentication.js'
 const router = Router();
 
 /**
@@ -181,6 +182,34 @@ router.post('/signup', userController.signupUser);
  *                   example: Internal server error 
  */
 router.post('/login', userController.loginUser);
+
+
+
+
+/**
+ * @swagger
+ * /user/friends:
+ *   get:
+ *     tags:
+ *       - User
+ *     summary: get users' friends
+ *     description: 
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Get user profile successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 friends:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/User'
+ */
+router.get('/friends', jwtAuthentication, userController.getFriends);
 
 
 export default router

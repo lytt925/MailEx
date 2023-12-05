@@ -19,21 +19,31 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
     if (jwt) {
-      setToken(jwt);
+      const decoded = jwtDecode(jwt);
+      const currentTime = Math.floor(Date.now() / 1000); // Current time in Unix timestamp
+      const isExpired = currentTime > decoded.exp; // Check if current time is past the 'exp' time
 
-      try {
-        // Decode the JWT and extract user information
-        const decoded = jwtDecode(jwt);
+      if (!isExpired) {
+        setToken(jwt);
         setUser({
           username: decoded.username,
           userId: decoded.id,
           email: decoded.email,
           provider: decoded.provider
         });
-      } catch (error) {
-        console.error("Failed to decode JWT:", error);
+      } else {
+        localStorage.removeItem('jwt');
+        setToken(null);
+        setUser({
+          username: '',
+          userId: '',
+          email: '',
+          provider: ''
+        });
       }
     }
+    console.log('user:', user);
+    console.log('token:', token);
   }, []);
 
   // Step 4: Pass User Data and Functions to Change It to the Context

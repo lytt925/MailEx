@@ -13,15 +13,16 @@ module.exports = {
         'sans': ['Noto Sans TC', 'sans-serif'],
       },
       colors: {
-        backup: {
+        app: {
           'grey': '#F5F1ED',
-          'dark-brown': '#8b4513',
-          'light-brown': '#F5DEB3',
-          'light-yellow': '#fefae0',
+          'content': 'rgb(var(--content-rgb) / 1)',
+          'primary': 'rgb(var(--primary-rgb) / 1)',
+          'primary-light': 'rgb(var(--secondary-rgb) / 1)',
+          'pale-primary': '#f5eddf',
           'light-green': '#ccd5ae',
           'white': '#fffaf0',
         },
-        app: {
+        backup: {
           'grey': '#F5F1ED',
           'dark-brown': '#000000',
           'primary': '#f5b53d', // HSV(39°, 75%, 96%)

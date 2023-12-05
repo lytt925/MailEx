@@ -4,27 +4,23 @@
 
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --primary-rgb: 245 181 61;
+  --secondary-rgb: 245 204 127;
+  --content-rgb: 26 36 51;
+  --bkg-rgb: 255 255 255;
 }
 
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+/* :root[theme="dark"] {
+  --primary-rgb: 26 36 51;
+  --secondary-rgb: 245 204 127;
+  --content-rgb: 245 181 61;
+  --bkg-rgb: 26 36 51;
 } */
 
 body {
-  /* color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb)); */
-
+  color: rgb(var(--content-rgb));
   --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  background-color: rgb(var(--bkg-rgb) / var(--tw-bg-opacity));
   min-height: 100vh;
   margin: 0;
 }
@@ -35,7 +31,10 @@ input:-internal-autofill-selected  {
   background-color: none;
 }
 
-
 .h-custom {
   height: calc(100vh - 64px);
+}
+
+.editorContainer .ql-editor {
+  @apply scrollbar-thin scrollbar-thumb-gray-100;
 }

@@ -31,7 +31,7 @@
           "Mail"
         ],
         "summary": "Get user's mail",
-        "description": "Get the user profile using access token",
+        "description": "Get the user's mail using access token",
         "security": [
           {
             "BearerAuth": []
@@ -107,8 +107,8 @@
         "tags": [
           "Mail"
         ],
-        "summary": "Get user's mail",
-        "description": "Get the user profile using access token",
+        "summary": "Create a mail",
+        "description": "Create a mail using access token",
         "security": [
           {
             "BearerAuth": []
@@ -190,6 +190,97 @@
                     "message": {
                       "type": "string",
                       "example": "Missing receiver id"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "server error message",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mail/{friendId}": {
+      "get": {
+        "tags": [
+          "Mail"
+        ],
+        "summary": "Get user's mail associated with a friend",
+        "description": "Get the user's mail associated with a friend using access token",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "friendId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the friend"
+          },
+          {
+            "in": "query",
+            "name": "paging",
+            "required": false,
+            "description": "Paging for request next page.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get user profile successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "friend_profile": {
+                      "$ref": "#/components/schemas/User"
+                    },
+                    "mails": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Mail"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "client error message",
+                      "example": "Invalid token"
                     }
                   }
                 }
@@ -488,6 +579,40 @@
           }
         }
       }
+    },
+    "/user/friends": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "get users' friends",
+        "description": null,
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get user profile successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "friends": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -537,20 +662,40 @@
             "default": "draft",
             "description": "Status of the mail."
           },
-          "createdAt": {
+          "created_at": {
             "type": "string",
             "format": "date-time",
             "description": "The date and time when the mail was created."
           },
-          "updatedAt": {
+          "updated_at": {
             "type": "string",
             "format": "date-time",
             "description": "The date and time when the mail was updated."
           },
-          "sentAt": {
+          "sent_at": {
             "type": "string",
             "format": "date-time",
             "description": "The date and time when the mail was sent."
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier for the User.",
+            "example": 3
+          },
+          "username": {
+            "type": "string",
+            "description": "User name",
+            "example": "lytt925"
+          },
+          "profile_content": {
+            "type": "string",
+            "description": "User profile content",
+            "example": "I am a grad student."
           }
         }
       }

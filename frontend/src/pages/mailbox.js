@@ -1,8 +1,14 @@
-import { Mailboxs } from '@/components/Mailboxs'
-import { Inbox } from '@/components/Inbox'
+// Import the unwrapped Inbox component
+import { Inbox } from '@/components/Inbox/index';
+import withAuth from '@/lib/withAuth';
 
-export default function MailboxPage() {
+// Wrap the component
+const AuthenticatedInbox = withAuth(Inbox);
+
+function MailboxPage() {
   return (
-    <Inbox />
-  )
+    <AuthenticatedInbox />
+  );
 }
+
+export default MailboxPage;

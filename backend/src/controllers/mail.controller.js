@@ -1,6 +1,9 @@
 import mailService from '../services/mail.services.js';
+import userServices from '../services/user.services.js';
+import { ITEM_PER_PAGE } from '../constants.js'
 
-const getMyMail = async (req, res) => {
+
+const getAllMail = async (req, res) => {
   // get user id from req.tokenPayload
   const userId = req.tokenPayload.id
   const pageNumber = parseInt(req.query.paging) || 0;
@@ -9,7 +12,11 @@ const getMyMail = async (req, res) => {
     pageNumber
   ); // limit, page
   if (mail) {
-    res.status(200).send(mail);
+    const response = {
+      mails: mail,
+      ...(mail.length < ITEM_PER_PAGE ? {} : { next_paging: pageNumber + 1 })
+    }
+    res.status(200).send(response);
   } else {
     res.status(404).send({ message: 'Mail not found' });
   }
@@ -27,7 +34,32 @@ const createMail = async (req, res) => {
   }
 }
 
+const getMailByFriendId = async (req, res) => {
+  // get user id from req.tokenPayload
+  const userId = req.tokenPayload.id
+  const friendId = req.params.friendId
+  const pageNumber = parseInt(req.query.paging) || 0;
+  const mail = await mailService.getMailByIdandFriendId(
+    userId,
+    friendId,
+    pageNumber
+  ); // limit, page
+  const data = await userServices.getFriendProfileById(friendId)
+  if (mail) {
+    const response = {
+      friend_profile: data[0],
+      mails: mail,
+      ...(mail.length < ITEM_PER_PAGE ? {} : { next_paging: pageNumber + 1 })
+    }
+    res.status(200).send(response);
+  } else {
+    res.status(404).send({ message: 'Mail not found' });
+  }
+}
+
+
 export default {
-  getMyMail,
-  createMail
+  getAllMail,
+  createMail,
+  getMailByFriendId
 }

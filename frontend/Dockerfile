@@ -3,8 +3,6 @@ FROM node:21.2.0-alpine as builder
 
 WORKDIR /app
 COPY package*.json ./
-ARG NEXT_PUBLIC_BACKEND_IP
-ENV NEXT_PUBLIC_BACKEND_IP=$NEXT_PUBLIC_BACKEND_IP
 RUN npm install
 COPY . .
 RUN npm run build

@@ -30,8 +30,6 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-      args:
-        NEXT_PUBLIC_BACKEND_IP: ${NEXT_PUBLIC_BACKEND_IP}
     image: ytlitw/mailex-frontend
     env_file:
       - frontend/.env.local

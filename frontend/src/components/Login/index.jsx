@@ -11,6 +11,7 @@ export function LoginPanel() {
     const [isLoading, setIsLoading] = useState(false); // For controlling button state
     const [isLoginFailed, setIsLoginFailed] = useState(false); // For controlling button state
     const { user: { userId }, setUser, setToken } = useUser();
+    console.log('login', `https://${process.env.NEXT_PUBLIC_BACKEND_IP}/api/1.0`)
     if (userId !== '') {
         router.push('/');
     }

@@ -25,7 +25,7 @@ async function getDistance(country1, country2, apiKey) {
     },
     headers: {
       'Content-Type': 'application/json',
-      'X-RapidAPI-Key': 'e62e4a9979msh7ba1ee715aa5634p14ae8bjsn5296547bb17e',
+      'X-RapidAPI-Key': '',
       'X-RapidAPI-Host': 'distance-calculator.p.rapidapi.com'
     }
   };

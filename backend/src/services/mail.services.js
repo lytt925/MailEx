@@ -50,6 +50,8 @@ const createMail = async (mail) => {
     VALUES (?, ?, ?, ?, ?)
   `;
 
+  console.log([sender_id, receiver_id, subject, content, status])
+
   try {
     const [result] = await db.execute(
       query,
@@ -59,6 +61,34 @@ const createMail = async (mail) => {
   } catch (error) {
     console.log(error);
     return null
+  }
+};
+
+const editMail = async (mail) => {
+  const {
+    mailId,
+    newSubject,
+    newContent,
+    newStatus,
+    newArrivedAt,
+    newSentAt
+  } = mail;
+
+  const query = `
+    UPDATE mails
+    SET subject = ?, content = ?, status = ?, arrived_at = ?, sent_at = ?
+    WHERE id = ?
+  `;
+
+  try {
+    const [result] = await db.execute(
+      query,
+      [newSubject, newContent, newStatus || "draft", newArrivedAt || null, newSentAt || null, mailId]
+    );
+    return result.affectedRows;
+  } catch (error) {
+    console.log(error);
+    return null;
   }
 };
 
@@ -96,5 +126,6 @@ const getMailByIdandFriendId = async (userId, friendId, pageNumber) => {
 export default {
   getMailById,
   createMail,
+  editMail,
   getMailByIdandFriendId
 }

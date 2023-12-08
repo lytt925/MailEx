@@ -5,7 +5,8 @@ const pool = mysql.createPool({
   user: 'admin',
   database: 'mailex',
   password: process.env.MYSQL_PWD,
-  port: '3306'
+  port: '3306',
+  timezone: 'Z'  // Sets the timezone to UTC
 });
 
 

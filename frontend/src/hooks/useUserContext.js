@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
-// import axios from '../axios';
 
 // Step 1: Create a Context
 const UserContext = createContext();
@@ -9,14 +8,23 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   // Step 3: Use a State to Store User Data
   const [token, setToken] = useState(null);
+  const [location, setLocation] = useState({ lat: null, lng: null });
   const [user, setUser] = useState({
-    username: '',
     userId: '',
-    email: '',
-    provider: ''
+    username: "",
+    email: "",
+    created_at: "",
+    age: 0,
+    country_code: "",
+    gender: "",
+    profile_content: "",
+    provider: "",
+    updated_at: "",
+    country_name: "",
   });
 
   useEffect(() => {
+    console.log("useEffect in useUserContext.js")
     const jwt = localStorage.getItem('jwt');
     if (jwt) {
       const decoded = jwtDecode(jwt);
@@ -26,23 +34,51 @@ export const UserProvider = ({ children }) => {
       if (!isExpired) {
         setToken(jwt);
         setUser({
-          username: decoded.username,
+          ...decoded,
           userId: decoded.id,
-          email: decoded.email,
-          provider: decoded.provider
         });
+
       } else {
         localStorage.removeItem('jwt');
         setToken(null);
         setUser({
-          username: '',
-          userId: '',
-          email: '',
-          provider: ''
+          id: '',
+          username: "",
+          email: "",
+          created_at: "",
+          age: 0,
+          country_code: "",
+          gender: "",
+          profile_content: "",
+          provider: "",
+          updated_at: "",
+          country_name: "",
         });
       }
     }
   }, []);
+
+
+  // function getLocation() {
+  //   try {
+  //     navigator.geolocation.getCurrentPosition(
+  //       (e) => {
+  //         // console.log(e)
+  //         setLocation({ lat: e.coords.latitude, lng: e.coords.longitude })
+  //       },
+  //       (e) => {
+  //         // console.log(e)
+  //         setLocation({ lat: 0, lng: 0 })
+  //       },
+  //       { timeout: 200000 });
+  //   } catch (e) {
+  //     console.log("Geolocation is not supported by this browser.", e)
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   getLocation();
+  // }, []);
 
   // Step 4: Pass User Data and Functions to Change It to the Context
   const value = {
@@ -50,6 +86,7 @@ export const UserProvider = ({ children }) => {
     setUser, // This function allows components to update the user state
     token,
     setToken,
+    location,
     logout: () => {
       setToken(null);
       setUser({
@@ -59,7 +96,6 @@ export const UserProvider = ({ children }) => {
         provider: ''
       });
       localStorage.removeItem('jwt');
-
     },
   };
 

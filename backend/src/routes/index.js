@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import userRouter from './user.js';
 import mailRouter from './mail.js';
-
+import locationRouter from './location.js';
 
 const router = Router();
 
@@ -24,7 +24,7 @@ router.get('/healthcheck', (req, res) => {
 
 router.use('/user', userRouter)
 router.use('/mail', mailRouter)
-// router.use('/order', orderRouter)
+router.use('/location', locationRouter)
 
 
 export default router

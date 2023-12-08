@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/router'
+import { redirect } from 'next/navigation'
 import CircularProgress from '@mui/material/CircularProgress';
 import { useUser } from "@/hooks/useUserContext";
-import axios from "../../axios"
+import axios from "../../api"
 
 export function LoginPanel() {
     const router = useRouter()
@@ -11,7 +12,6 @@ export function LoginPanel() {
     const [isLoading, setIsLoading] = useState(false); // For controlling button state
     const [isLoginFailed, setIsLoginFailed] = useState(false); // For controlling button state
     const { user: { userId }, setUser, setToken } = useUser();
-    console.log('login', `https://${process.env.NEXT_PUBLIC_BACKEND_IP}/api/1.0`)
     if (userId !== '') {
         router.push('/');
     }
@@ -39,11 +39,10 @@ export function LoginPanel() {
                 })
             localStorage.setItem('jwt', data.access_token);
             setToken(data.access_token);
+            const userData = data.user;
             const userResponse = {
-                userId: data.user.id,
-                username: data.user.username,
-                email: data.user.email,
-                provider: data.user.provider,
+                ...userData,
+                userId: userData.id,
             };
             setUser(userResponse);
         } catch (error) {

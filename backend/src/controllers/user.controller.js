@@ -6,6 +6,12 @@ import { generateAccessToken } from '../helper/jwt.js';
 
 const generateSigninResponse = (user) => {
   if (user) {
+    // const tokenPayload = {
+    //   id: user.id,
+    //   username: user.username,
+    //   email: user.email,
+    //   provider: user.provider
+    // }
     const { token, expiresIn } = generateAccessToken(user);
     const response = {
       "access_token": token,
@@ -38,7 +44,12 @@ const signupUser = async (req, res) => {
 }
 
 const loginUser = async (req, res) => {
-  const { username, email, password, provider } = req.body;
+  const { username, email, password, provider, token } = req.body;
+
+  // if (token) {
+  //   const user = authenticateToken(token);
+  //   console.log(user)
+  // }
 
   try {
     if (provider !== "native" && !email && !username) {
@@ -55,7 +66,6 @@ const loginUser = async (req, res) => {
       user = await userService.getUserByEmailorUsername(
         email,
         null,
-        ['id', 'provider', 'email', 'username', 'password']
       );
       // console.log("login", user)
       if (!user) {
@@ -65,7 +75,6 @@ const loginUser = async (req, res) => {
       user = await userService.getUserByEmailorUsername(
         null,
         username,
-        ['id', 'provider', 'email', 'username', 'password']
       );
       // console.log("login", user)
       if (!user) {
@@ -76,12 +85,7 @@ const loginUser = async (req, res) => {
     // Authentication
     const result = await bcrypt.compare(password, user.password);
     if (result) {
-      user = {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        provider: 'native',
-      };
+      delete user.password;
       const response = generateSigninResponse(user)
       return res.status(200).send(response)
     } else {

@@ -215,4 +215,8 @@ router.post('/', jwtAuthentication, mailController.createMail);
  */
 router.get('/:friendId', jwtAuthentication, mailController.getMailByFriendId);
 
+
+
+router.patch('/:mailId', jwtAuthentication, mailController.editMailbyMailId);
+
 export default router

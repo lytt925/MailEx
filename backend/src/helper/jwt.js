@@ -10,7 +10,7 @@ const authenticateToken = (token) => {
 }
 
 const generateAccessToken = (user) => {
-  const expiresIn = '1h';
+  const expiresIn = '24h';
   const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn });
   return { token, expiresIn };
 }

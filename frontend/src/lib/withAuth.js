@@ -6,7 +6,7 @@ import { jwtDecode } from 'jwt-decode';
 
 const withAuth = (WrappedComponent) => {
   function WithAuthComponent(props) {
-    const { user, token } = useUser();
+    const { user, token, location } = useUser();
     const router = useRouter();
     useEffect(() => {
       try {
@@ -34,7 +34,7 @@ const withAuth = (WrappedComponent) => {
         router.push('/login');
       }
     }, [router]);
-    return <WrappedComponent {...props} user={user} token={token} />;
+    return <WrappedComponent {...props} user={user} token={token} location={location} />;
   };
 
   const wrappedComponentName = WrappedComponent.displayName

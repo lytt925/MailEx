@@ -1,11 +1,12 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import axios from '../axios';
+import axios from '../api';
 
-const fetchMails = async (paging) => {
+const fetchMails = async (token, paging) => {
+  if (!token) return console.log('No token');
   try {
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+      'Authorization': 'Bearer ' + token
     };
     const { data } = await axios.get(`/mail`, {
       params: { paging },
@@ -13,11 +14,11 @@ const fetchMails = async (paging) => {
     });
     return data;
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 }
 
-export const useMails = (userId) => {
+export const useMails = (userId, token) => {
   const {
     status,
     data,
@@ -25,13 +26,15 @@ export const useMails = (userId) => {
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
-    dataUpdatedAt
+    dataUpdatedAt,
+    refetch,
+    isRefetching,
   } = useInfiniteQuery({
     queryKey: ['mails', userId],
-    queryFn: ({ pageParam }) => fetchMails(pageParam),
+    queryFn: ({ pageParam }) => fetchMails(token, pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage?.next_paging ?? undefined,
-    enabled: !!userId,
+    enabled: !!userId && !!token,
   })
 
 
@@ -43,5 +46,7 @@ export const useMails = (userId) => {
     fetchNextPage,
     hasNextPage,
     dataUpdatedAt,
+    refetch,
+    isRefetching
   }
 }

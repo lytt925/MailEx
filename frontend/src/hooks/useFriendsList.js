@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import axios from '../axios';
+import axios from '../api';
 import { useUser } from './useUserContext';
 
 const fetchFriendsList = async (token) => {
@@ -18,7 +18,7 @@ export const useFriendsList = () => {
   const { status, data, error } = useQuery({
     queryKey: ['friends', user.userId],
     queryFn: () => fetchFriendsList(token),
-    enabled: !!user.userId,
+    enabled: !!user.userId && !!token,
   });
 
   useEffect(() => {

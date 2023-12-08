@@ -67,13 +67,13 @@ export const Navbar = () => {
                   </div>
                   <ul className="py-2" aria-labelledby="user-menu-button">
                     <li>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200">Profile</a>
+                      <a href="#" className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200">Profile</a>
                     </li>
                     <li>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200">Settings</a>
+                      <a href="#" className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200">Settings</a>
                     </li>
                     <li>
-                      <div onClick={handleLogout} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200">
+                      <div onClick={handleLogout} className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200">
                         Log Out
                       </div>
                     </li>

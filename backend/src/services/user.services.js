@@ -17,25 +17,19 @@ async function createUser(userData) {
 }
 
 
-const getUserByEmailorUsername = async (email, username, attributes = null) => {
+const getUserByEmailorUsername = async (email, username) => {
   try {
-    let query;
-    let queryParams = [];
 
-    // Construct the SELECT part of the query based on provided attributes
-    if (attributes && attributes.length > 0) {
-      const fields = attributes.join(', ');
-      query = `SELECT ${fields} FROM users WHERE `;
-    } else {
-      query = 'SELECT * FROM users WHERE ';
-    }
+    const queryParams = []
+    let query = 'SELECT users.*, countries.country_name FROM users ';
+    query += 'INNER JOIN countries ON users.country_code = countries.code ';
 
     // Add the appropriate condition based on email or username
     if (email) {
-      query += 'email = ?';
+      query += 'WHERE email = ?';
       queryParams.push(email);
     } else if (username) {
-      query += 'username = ?';
+      query += 'WHERE username = ?';
       queryParams.push(username);
     }
 
@@ -54,9 +48,10 @@ const getUserByEmailorUsername = async (email, username, attributes = null) => {
 
 const getFriendsById = async (id) => {
   const query = `
-  SELECT DISTINCT u.id, u.username, u.profile_content 
+  SELECT DISTINCT u.id, u.username, u.profile_content, u.country_code, c.country_name 
   FROM users u
   JOIN mails m ON u.id = m.sender_id OR u.id = m.receiver_id
+  JOIN countries c ON u.country_code = c.code
   WHERE (m.sender_id = ? OR m.receiver_id = ?)
   AND u.id != ?`;
 

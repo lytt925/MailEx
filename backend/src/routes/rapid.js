@@ -1,17 +1,7 @@
 import axios from "axios";
-// const axios = require('axios');
-import api from "./index.js";
 
-async function getDistance(country1, country2, apiKey) {
+async function getDistance(country1_lat, country1_lng, country2_lat, country2_lng) {
 
-  const { data:
-    { country1_code, country1_lat, country1_lng, country2_code, country2_lat, country2_lng } }
-    = await api.get('/location', {
-      params: {
-        country1,
-        country2
-      }
-    })
 
   const options = {
     method: 'GET',
@@ -25,12 +15,11 @@ async function getDistance(country1, country2, apiKey) {
     },
     headers: {
       'Content-Type': 'application/json',
-      'X-RapidAPI-Key': 'e62e4a9979msh7ba1ee715aa5634p14ae8bjsn5296547bb17e',
+      'X-RapidAPI-Key': process.env.RAPID_API_KEY,
       'X-RapidAPI-Host': 'distance-calculator.p.rapidapi.com'
     }
   };
 
-  console.log("key", process.env.RAPID_API_KEY);
   try {
     const response = await axios.request(options);
     console.log(response.data);

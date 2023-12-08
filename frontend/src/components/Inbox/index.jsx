@@ -142,6 +142,7 @@ export const Inbox = ({ user, token, location }) => {
     }
 
     const handleSend = async () => {
+        handleSave();
         setIsSending(true);
         setIsEditting(false);
         const headers = {
@@ -151,18 +152,33 @@ export const Inbox = ({ user, token, location }) => {
         console.log(user, selectedFriend)
         let distance = 2400;
         const SPEED_PER_HOUR = 100;
+        // try {
+        //     const res = await getDistance(user.country_code, selectedFriend.country_code)
+        //     distance = res.distance;
+        // } catch (e) {
+        //     console.log(e)
+        // }
         try {
-            const res = await getDistance(user.country_code, selectedFriend.country_code)
-            distance = res.distance;
+            const { data }
+                = await axios.get('/location/test', {
+                    params: {
+                        country1: user.country_code,
+                        country2: selectedFriend.country_code,
+                    }
+                })
+            distance = data.distance;
+            console.log('distance', distance)
         } catch (e) {
             console.log(e)
         }
+
         const changedMail = {
             ...selectedMail,
             status: 'sending',
             sent_at: new Date(),
             arrived_at: new Date(new Date().getTime() + (distance / SPEED_PER_HOUR) * 60 * 60 * 1000),
         }
+
         try {
             const { data } = await axios.patch(`/mail/${changedMail.id}`, {
                 senderId: changedMail.sender_id,

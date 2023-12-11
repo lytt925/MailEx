@@ -181,7 +181,13 @@ export const Inbox = ({ user, token }) => {
                 isSelected={friend.id === selectedFriendId}
                 key={friend.id}
                 friend={friend}
-                handleClick={() => { setSelectedFriendId(friend.id) }}
+                handleClick={() => {
+                  if (isEditting) {
+                    handleSave();
+                    setIsEditting(false);
+                  }
+                  setSelectedFriendId(friend.id)
+                }}
               />)}
           </div>
         </div >
@@ -226,7 +232,7 @@ export const Inbox = ({ user, token }) => {
                       />)
                 }
                 <div className="ref h-[1px]" ref={ref} />
-                {((mails.length === 0 && isFetching) || isFetchingNextPage) &&
+                {((mails.length === 0 && isFetching) || friendMails === 0 && isFetchingNextPage) &&
                   <div className='flex flex-col mt-10 justify-center items-center'>
                     <CircularProgress size={'36px'} />
                   </div>

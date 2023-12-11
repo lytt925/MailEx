@@ -17,7 +17,6 @@ const fetchUserCards = async (userId) => {
 export async function getServerSideProps({ req, res }) {
   const randomTopics = topics.sort(() => Math.random() - Math.random()).slice(0, 1);
   const { users } = await fetchUserCards();
-  console.log(users);
 
   return {
     props: {

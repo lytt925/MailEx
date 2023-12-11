@@ -211,5 +211,30 @@ router.post('/login', userController.loginUser);
  */
 router.get('/friends', jwtAuthentication, userController.getFriends);
 
+/**
+ * @swagger
+ * /user/usercards:
+ *   get:
+ *     tags:
+ *       - User
+ *     summary: get users' similar cards
+ *     description: 
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Get user profile successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 friends:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/User'
+ */
+router.get('/usercards', userController.getRecommendUsers);
+
 
 export default router

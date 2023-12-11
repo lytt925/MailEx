@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 import 'react-quill/dist/quill.bubble.css'; // Import Quill styles
 import styles from './quill.module.css';
-
+import Loader from '../Inbox/loader';
 
 const QuillEditor = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -39,8 +39,20 @@ const bindings = {
 }
 
 
-export default function Quill({ userId, mail, handleSave, isEditting, setIsEditting }) {
-    const [newContent, setNewContent] = useState(mail.content);
+export default function Quill({ userId, setMails, selectedMail, handleSave, isEditting, setIsEditting }) {
+    const [newContent, setNewContent] = useState(selectedMail?.content);
+
+    let arrivedDate;
+    if (selectedMail?.arrived_at) {
+        arrivedDate = new Date(selectedMail.arrived_at);
+    }
+    const arrived = selectedMail?.arrived_at && arrivedDate < new Date();
+    const isSenderMe = (selectedMail?.sender_id === userId)
+
+    if (newContent !== selectedMail?.content) {
+        setNewContent(selectedMail?.content)
+    }
+
     bindings.customSave = {
         key: 'S',
         shortKey: true,  // For both Ctrl and Command
@@ -61,19 +73,23 @@ export default function Quill({ userId, mail, handleSave, isEditting, setIsEditt
             [{ color: [] }],
             ['clean'],
         ],
-        keyboard: {
-            bindings: bindings
-        }
+        // keyboard: {
+        //     bindings: bindings
+        // }
     };
 
     const handleEditorChange = (newContent) => {
         setNewContent(newContent);
-        mail.content = newContent
+        setMails(prev => {
+            const index = prev.findIndex(mail => mail.id === selectedMail.id)
+            prev[index].content = newContent
+            return [...prev]
+        })
     };
 
     return (
         <div className="flex items-center flex-col h-full max-w-full">
-            {(new Date(mail.arrived_at) < new Date() || mail.sender_id == userId) ?
+            {arrived || isSenderMe ?
                 <QuillEditor
                     key={isEditting}
                     placeholder={'Write something...'}
@@ -85,7 +101,7 @@ export default function Quill({ userId, mail, handleSave, isEditting, setIsEditt
                     theme={!isEditting ? "bubble" : "snow"}
                     className={`editorContainer scrollbar-thin scrollbar-thumb-gray-100 w-full max-w-full h-[95%] bg-white ${styles.editorContainer}`}
                 /> :
-                <div>還沒到</div>
+                selectedMail?.arrived_at && <Loader />
             }
         </div>
     );

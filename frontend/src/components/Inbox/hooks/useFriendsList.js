@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import axios from '../api';
-import { useUser } from './useUserContext';
+import axios from '../../../api';
+import { useUser } from '../../../hooks/useUserContext';
 
 const fetchFriendsList = async (token) => {
   const headers = {

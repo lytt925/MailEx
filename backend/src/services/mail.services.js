@@ -42,20 +42,18 @@ const getMailById = async (userId, pageNumber) => {
 
 const createMail = async (mail) => {
 
-  const { sender_id, receiver_id, subject, content, status } = mail
+  const { sender_id, receiver_id, subject, content, status, sent_at, arrived_at } = mail
 
   const query = `
     INSERT INTO mails 
-    (sender_id, receiver_id, subject, content, status) 
-    VALUES (?, ?, ?, ?, ?)
+    (sender_id, receiver_id, subject, content, status, sent_at, arrived_at) 
+    VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
-
-  console.log([sender_id, receiver_id, subject, content, status])
 
   try {
     const [result] = await db.execute(
       query,
-      [sender_id, receiver_id, subject, content, status]
+      [sender_id, receiver_id, subject, content, status, sent_at || null, arrived_at || null]
     );
     return result.insertId;
   } catch (error) {

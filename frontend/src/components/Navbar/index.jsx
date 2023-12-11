@@ -46,15 +46,17 @@ export const Navbar = () => {
             <ul className="flex flex-col font-medium p-4 sm:p-0 mt-4 border sm:space-x-8 sm:flex-row sm:mt-0 sm:border-0">
               <Link href={userId !== '' ? '/mailbox' : '/login'} className="group relative flex justify-center items-center text-app-content font-bold tracking-wide" >
                 <div className='absolute h-10 w-10 rounded-full group-hover:bg-app-primary-light' ></div>
-                <IconMailoutline className="z-10 text-app-content text-2xl" />
+                <IconMailoutline className="cursor-pointer z-10 text-app-content text-2xl" />
               </Link>
-              <Link className="group relative flex justify-center items-center text-app-content font-bold tracking-wide" href={'/'}>
+              <div className='cursor-pointer'>
+                <Link className="cursor-pointer group relative flex justify-center items-center text-app-content font-bold tracking-wide" href={'/'}>
+                  <div className='cursor-pointer absolute h-10 w-10 rounded-full group-hover:bg-app-primary-light' ></div>
+                  <FiGlobe className='cursor-pointer z-10' size={'24px'} />
+                </Link>
+              </div>
+              <div className="cursor-pointer group relative flex justify-center items-center text-app-content font-bold tracking-wide">
                 <div className='absolute h-10 w-10 rounded-full group-hover:bg-app-primary-light' ></div>
-                <FiGlobe className='z-10' size={'24px'} />
-              </Link>
-              <div className="group relative flex justify-center items-center text-app-content font-bold tracking-wide cursor-pointer">
-                <div className='absolute h-10 w-10 rounded-full group-hover:bg-app-primary-light' ></div>
-                <FaRegUserCircle className="z-10" size={'24px'} onClick={toggleMenu} />
+                <FaRegUserCircle className=" z-10" size={'24px'} onClick={toggleMenu} />
               </div>
             </ul>
             <div ref={menuRef} className={`${isUserMenuExpanded ? '' : 'hidden'} absolute right-8 top-4 flex items-center space-x-3 md:space-x-0`}>

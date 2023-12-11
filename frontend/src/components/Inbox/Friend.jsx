@@ -8,10 +8,10 @@ export const Friend = ({ friend, handleClick, isSelected }) => {
             <div className='flex justify-between items-center w-full' >
                 <div className="font-semibold text-xl">{friend.username}</div>
                 <Chip
+                    key={isSelected}
                     label={friend.country_name}
                     size="small"
-                    className={`${isSelected ? 'bg-app-primary-light' : ''}`}
-                    sx={{ fontSize: '10px', fontWeight: "bold" }}
+                    sx={{ fontSize: '10px', fontWeight: "bold", backgroundColor: isSelected ? 'primary.light' : '' }}
                 />
             </div>
         </div >

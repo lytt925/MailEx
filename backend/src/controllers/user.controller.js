@@ -113,8 +113,32 @@ const getFriends = async (req, res) => {
   }
 }
 
+
+const getRecommendUsers = async (req, res) => {
+  const userId = req.body.userId
+  try {
+    let users;
+    const response = {
+      users: users
+    }
+
+    if (!userId) {
+      users = await userService.getRandomUsers();
+    } else {
+      users = await userService.getSimilarUsers(userId);
+    }
+
+    response.users = users;
+    return res.status(200).send(response)
+  } catch (error) {
+    console.log(error)
+    return res.status(500).send({ error: "Internal Server Error" })
+  }
+}
+
 export default {
   signupUser,
   loginUser,
-  getFriends
+  getFriends,
+  getRecommendUsers
 }

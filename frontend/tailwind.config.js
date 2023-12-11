@@ -40,6 +40,14 @@ module.exports = {
         'lg': '1024px',
         'xl': '1280px',
         '2xl': '1536px',
+      },
+      backgroundImage: theme => ({
+        'note-pattern': `linear-gradient(to right, white 1px, transparent 1px),
+                         linear-gradient(to left, white 1px, transparent 1px),
+                         repeating-linear-gradient(white, white 30px, #ccc 30px, #ccc 31px, white 31px)`
+      }),
+      lineHeight: {
+        'custom': '31px'
       }
     },
   },

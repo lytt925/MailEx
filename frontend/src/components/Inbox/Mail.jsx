@@ -26,30 +26,33 @@ function extractTextFromHTML(htmlString) {
 
 export const Mail = ({ mail, isSelected, setSelectedMail, userId }) => {
 
-
     const handleClick = () => {
         setSelectedMail(mail);
     }
 
-    const arrived = ((mail.arrived_at && new Date(mail.arrived_at) < new Date()) || mail.sender_id == userId);
-    const sending = ((mail.arrived_at && new Date(mail.arrived_at) > new Date()) && mail.sender_id == userId);
-    let date;
-    let formattedDate;
+    let arrivedDate;
+    if (mail.arrived_at) {
+        arrivedDate = new Date(mail.arrived_at);
+    }
+    const arrived = mail.arrived_at && arrivedDate < new Date();
+    const sending = mail.arrived_at && arrivedDate > new Date();
 
-    if ((mail.arrived_at && new Date(mail.arrived_at) < new Date())) {
-        date = new Date(mail.arrived_at);
-        formattedDate = format(date, 'yyyy/MM/dd');
+
+    let formattedDate;
+    if (arrivedDate) {
+        formattedDate = format(arrivedDate, 'yyyy/MM/dd');
     } else {
-        date = new Date(mail.updated_at || mail.created_at);
+        const date = new Date(mail.updated_at || mail.created_at);
         // formattedDate = format(date, 'yyyy/MM/dd HH:mm');
         formattedDate = format(date, 'yyyy/MM/dd');
     }
 
-    const isMine = (mail.receiver_id == userId)
+    const isReceiverMe = (mail.receiver_id === userId)
+    const isSenderMe = (mail.sender_id === userId)
 
     return (
-        arrived ?
-            <div onClick={handleClick} className={`${isMine ? "bg-app-pale-primary" : ""} flex hover:bg-gray-100 border-y border-gray-100 ${isSelected ? 'bg-gray-100' : ''}`}>
+        arrived || isSenderMe ?
+            <div onClick={handleClick} className={`${isReceiverMe ? "" : ""} min-h-[120px] flex hover:bg-gray-100 border-y border-gray-100 ${isSelected ? 'bg-gray-100' : ''}`}>
                 <div className={`w-1 min-w-4 ${isSelected ? 'bg-app-primary' : ''}`}></div>
                 <div className="flex flex-col flex-grow p-4 cursor-pointer max-w-[97%]">
                     <div className='flex items-start justify-between mb-1'>
@@ -64,7 +67,7 @@ export const Mail = ({ mail, isSelected, setSelectedMail, userId }) => {
                     <div className="truncate max-w-[85%] text-sm text-gray-600">{extractTextFromHTML(mail.content)}</div>
                 </div>
             </div> :
-            <div onClick={handleClick} className={`${isMine ? "bg-app-pale-primary" : ""} min-h-[120px] flex hover:bg-gray-100 border-y border-gray-100 ${isSelected ? 'bg-gray-100' : ''}`}>
+            <div onClick={handleClick} className={`${isReceiverMe ? "" : ""} min-h-[120px] flex hover:bg-gray-100 border-y border-gray-100 ${isSelected ? 'bg-gray-100' : ''}`}>
                 <div className={`w-1 min-w-4 ${isSelected ? 'bg-app-primary' : ''}`}></div>
                 <div className="flex flex-col flex-grow p-4 cursor-pointer max-w-[97%]">
                     <div className='flex items-start justify-between mb-1'>
@@ -72,7 +75,7 @@ export const Mail = ({ mail, isSelected, setSelectedMail, userId }) => {
                         <div className="text-sm text-gray-400">{formattedDate}</div>
                     </div>
                     <div className='my-1 truncate'>
-                        <p className="inline truncate font-semibold text-lg">還沒到</p>
+                        <p className="inline truncate font-semibold text-lg">還在路上</p>
                     </div>
                     <div className="truncate max-w-[85%] text-sm text-gray-600">抵達時間: {format(new Date(mail.arrived_at), 'yyyy/MM/dd HH:mm')}</div>
                 </div>

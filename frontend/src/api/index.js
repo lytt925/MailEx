@@ -8,5 +8,5 @@ const instance = axios.create({
     : `https://${process.env.NEXT_PUBLIC_BACKEND_IP}/api/1.0`,
 });
 
-console.log("api endpoint", `http://${process.env.NEXT_PUBLIC_BACKEND_IP}/api/1.0`)
+// console.log("api endpoint", `http://${process.env.NEXT_PUBLIC_BACKEND_IP}/api/1.0`)
 export default instance;

@@ -26,7 +26,3 @@ export async function getServerSideProps({ req, res }) {
     },
   };
 }
-
-export async function getStaticPath({ req, res }) {
-
-}

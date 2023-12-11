@@ -59,7 +59,7 @@ export const Inbox = ({ user, token }) => {
         setSelectedFriendId(friend.id);
       }
     }
-  }, [data, friendsList, setIsSending]);
+  }, [data, friendsList, setIsSending, isSending, selectedFriendId, selectedMailId, user.userId]);
 
 
   useEffect(() => {
@@ -68,7 +68,7 @@ export const Inbox = ({ user, token }) => {
       const friendId = mails[0]?.sender_id !== user.userId ? mails[0]?.sender_id : mails[0]?.receiver_id;
       setSelectedFriendId(friendId);
     }
-  }, [friendsList, selectedFriendId])
+  }, [friendsList, selectedFriendId, mails, user.userId])
 
   const friendMails = mails.filter(mail => mail.receiver_id === selectedFriendId || mail.sender_id === selectedFriendId)
   if (friendMails.length > 0 && friendMails.some(mail => mail.id === selectedMailId) === false) {

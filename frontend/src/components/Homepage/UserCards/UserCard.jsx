@@ -55,7 +55,11 @@ function UserCard({ userProfile, onClick }) {
     const [randomIcon, setRandomIcon] = useState(null);
 
     const getRandomIcon = () => {
-        const icons = [<GiFlowerPot className={iconClassName} />, <FaTelegramPlane className={iconClassName} />, <FaCanadianMapleLeaf className={iconClassName} />];
+        const icons = [
+            <GiFlowerPot key='flower' className={iconClassName} />,
+            <FaTelegramPlane key='plane' className={iconClassName} />,
+            <FaCanadianMapleLeaf key='maple' className={iconClassName} />
+        ];
         return icons[Math.floor(Math.random() * icons.length)];
     };
 

@@ -1,6 +1,6 @@
 import { Homepage } from '@/components/Homepage'
 import topics from '@/api/topics.json';
-import api from '@/api';
+import axios from 'axios';
 
 export default function MainPage({ topics, users }) {
   return (
@@ -10,7 +10,7 @@ export default function MainPage({ topics, users }) {
 
 
 const fetchUserCards = async (userId) => {
-  const response = await api.get('/user/usercards', { userId });
+  const response = await axios.get('http://backend:4000/api/1.0/user/usercards', { userId });
   return response.data;
 }
 

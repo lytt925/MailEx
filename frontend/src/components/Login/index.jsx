@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/router'
-import { redirect } from 'next/navigation'
+import Link from "next/link";
+// import { redirect } from 'next/navigation'
 import CircularProgress from '@mui/material/CircularProgress';
 import { useUser } from "@/hooks/useUserContext";
 import axios from "../../api"
@@ -124,9 +125,9 @@ export function LoginPanel() {
                     </button>
 
                     <p className="mt-8">Need an account? &nbsp;
-                        <a href="#" className="text-app-primary hover:text-app-primary-light font-semibold">
+                        <Link href="/signup" className="text-app-primary hover:text-app-primary-light font-semibold">
                             Create an account
-                        </a>
+                        </Link>
                     </p>
                 </div>
             </div>

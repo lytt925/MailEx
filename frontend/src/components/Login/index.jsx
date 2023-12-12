@@ -11,9 +11,19 @@ export function LoginPanel() {
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false); // For controlling button state
     const [isLoginFailed, setIsLoginFailed] = useState(false); // For controlling button state
+    const [redirectTo, setRedirectTo] = useState('');
+
+    useEffect(() => {
+        // Store the redirect URL from the query parameter
+        if (router.query.redirect) {
+            setRedirectTo(router.query.redirect);
+        }
+    }, [router]);
+
     const { user: { userId }, setUser, setToken } = useUser();
     if (userId !== '') {
-        router.push('/');
+        router.push(decodeURIComponent(redirectTo) || '/');
+        if (isLoading) setIsLoading(false);
     }
 
     // Handle input changes
@@ -48,9 +58,6 @@ export function LoginPanel() {
         } catch (error) {
             console.error('Login failed:', error);
             setIsLoginFailed(true);
-        } finally {
-            setIsLoading(false);
-            // router.push('/');
         }
     };
 

@@ -237,4 +237,18 @@ router.get('/friends', jwtAuthentication, userController.getFriends);
 router.get('/usercards', userController.getRecommendUsers);
 
 
+router.post('/logout', (req, res) => {
+  console.log("logout")
+  // Overwrite the cookie with an expired one
+  res.cookie('userId', '', {
+    expires: new Date(0), // Set an expiration date in the past to delete the cookie
+    path: '/',
+    httpOnly: true,
+    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // Adjust based on environment
+    secure: process.env.NODE_ENV === 'production' // Use Secure only in production
+  });
+  res.status(200).json({ message: 'Logged out successfully' });
+});
+
+
 export default router

@@ -44,7 +44,7 @@ export const Navbar = () => {
           </Link>
           <div className="relative items-center justify-between hidden w-full sm:flex sm:w-auto sm:px-8" id="navbar-user">
             <ul className="flex flex-col font-medium p-4 sm:p-0 mt-4 border sm:space-x-8 sm:flex-row sm:mt-0 sm:border-0">
-              <Link href={userId !== '' ? '/mailbox' : '/login'} className="group relative flex justify-center items-center text-app-content font-bold tracking-wide" >
+              <Link href={userId !== '' ? '/mailbox' : '/login?redirect=%2Fmailbox'} className="group relative flex justify-center items-center text-app-content font-bold tracking-wide" >
                 <div className='absolute h-10 w-10 rounded-full group-hover:bg-app-primary-light' ></div>
                 <IconMailoutline className="cursor-pointer z-10 text-app-content text-2xl" />
               </Link>

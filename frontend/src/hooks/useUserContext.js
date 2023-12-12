@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
+import api from '@/api'
 
 // Step 1: Create a Context
 const UserContext = createContext();
@@ -95,6 +96,7 @@ export const UserProvider = ({ children }) => {
         email: '',
         provider: ''
       });
+      handleLogout();
       localStorage.removeItem('jwt');
     },
   };
@@ -109,4 +111,14 @@ export const useUser = () => {
     throw new Error('useUser must be used within a UserProvider');
   }
   return context;
+};
+
+const handleLogout = async () => {
+  try {
+    await api.post('/user/logout', {}, { withCredentials: true });
+    // Update application state as necessary
+    // For example, clear user state, redirect to home or login page, etc.
+  } catch (error) {
+    console.error('Logout failed:', error);
+  }
 };

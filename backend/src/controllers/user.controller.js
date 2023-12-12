@@ -87,7 +87,13 @@ const loginUser = async (req, res) => {
     if (result) {
       delete user.password;
       const response = generateSigninResponse(user)
-      res.cookie('userId', user.id, { path: '/', httpOnly: true, maxAge: 3600000, sameSite: 'none', secure: process.env.NODE_ENV === 'production' });
+      res.cookie('userId', user.id, {
+        path: '/',
+        httpOnly: true,
+        maxAge: 3600000,
+        sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+        secure: process.env.NODE_ENV === 'production'
+      });
       return res.status(200).send(response)
     } else {
       return res.status(403).send({ error: "wrong password" });

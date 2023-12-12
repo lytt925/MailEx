@@ -8,11 +8,13 @@ const withAuth = (WrappedComponent) => {
   function WithAuthComponent(props) {
     const { user, token, location } = useUser();
     const router = useRouter();
+    console.log(`/login?redirect=${encodeURIComponent(router.asPath)}`)
     useEffect(() => {
+      console.log(`/login?redirect=${encodeURIComponent(router.asPath)}`)
       try {
         const token = localStorage.getItem('jwt');
         if (!token) {
-          router.push('/login');
+          router.push(`/login?redirect=${encodeURIComponent(router.asPath)}`);
         }
 
         const decoded = jwtDecode(token);
@@ -21,17 +23,17 @@ const withAuth = (WrappedComponent) => {
 
         if (isExpired) {
           localStorage.removeItem('jwt');
-          router.push('/login');
+          router.push(`/login?redirect=${encodeURIComponent(router.asPath)}`);
         }
       } catch (error) {
         if (error.name === 'InvalidTokenError') {
           console.log('Invalid token in withAuth',);
           localStorage.removeItem('jwt');
-          router.push('/login');
+          router.push(`/login?redirect=${encodeURIComponent(router.asPath)}`);
         } else {
           console.error(error);
         }
-        router.push('/login');
+        router.push(`/login?redirect=${encodeURIComponent(router.asPath)}`);
       }
     }, [router]);
     return <WrappedComponent {...props} user={user} token={token} location={location} />;

@@ -54,9 +54,9 @@ export const Navbar = () => {
                   <FiGlobe className='cursor-pointer z-10' size={'24px'} />
                 </Link>
               </div>
-              <div className="cursor-pointer group relative flex justify-center items-center text-app-content font-bold tracking-wide">
+              <div onClick={toggleMenu} className="cursor-pointer group relative flex justify-center items-center text-app-content font-bold tracking-wide">
                 <div className='absolute h-10 w-10 rounded-full group-hover:bg-app-primary-light' ></div>
-                <FaRegUserCircle className=" z-10" size={'24px'} onClick={toggleMenu} />
+                <FaRegUserCircle className=" z-10" size={'24px'} />
               </div>
             </ul>
             <div ref={menuRef} className={`${isUserMenuExpanded ? '' : 'hidden'} absolute right-8 top-4 flex items-center space-x-3 md:space-x-0`}>

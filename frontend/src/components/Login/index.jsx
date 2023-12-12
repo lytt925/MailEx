@@ -36,7 +36,7 @@ export function LoginPanel() {
                     email,
                     password,
                     provider: 'native'
-                })
+                }, { withCredentials: true })
             localStorage.setItem('jwt', data.access_token);
             setToken(data.access_token);
             const userData = data.user;

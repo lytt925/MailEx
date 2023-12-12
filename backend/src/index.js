@@ -21,7 +21,24 @@ console.log(`NODE_ENV: ${NODE_ENV}`)
 // Create a new express app
 const app = express()
 app.use(express.json());
-app.use(cors())
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://44.217.27.217',
+  'https://ec2-44-217-27-217.compute-1.amazonaws.com',
+  'http://44.217.27.217',
+  'http://ec2-44-217-27-217.compute-1.amazonaws.com'
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }, // Your frontend origin
+  credentials: true
+}));
 
 // Define routers
 const apiPath = '/api/1.0';

@@ -87,6 +87,7 @@ const loginUser = async (req, res) => {
     if (result) {
       delete user.password;
       const response = generateSigninResponse(user)
+      res.cookie('userId', user.id, { path: '/', httpOnly: true, maxAge: 3600000 });
       return res.status(200).send(response)
     } else {
       return res.status(403).send({ error: "wrong password" });
@@ -115,7 +116,8 @@ const getFriends = async (req, res) => {
 
 
 const getRecommendUsers = async (req, res) => {
-  const userId = req.body.userId
+  // get from params
+  const userId = req.query.userId
   try {
     let users;
     const response = {

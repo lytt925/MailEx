@@ -40,9 +40,10 @@ const Topic = ({ topics, users }) => {
     const [randomUser, setRandomUser] = useState(getRandomUser(users));
     const { user, token } = useUser();
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => { setLoginAlertOpen(false); setOpen(true); }
     const handleClose = () => setOpen(false);
     const [alertOpen, setAlertOpen] = useState(false);
+    const [loginAlertOpen, setLoginAlertOpen] = useState(false);
     const handleChange = (e) => {
         setAnswer(e.target.value);
     }
@@ -77,14 +78,21 @@ const Topic = ({ topics, users }) => {
             'Authorization': 'Bearer ' + token
         }
 
-        const { data } = await api.post(`/mail`, newMail, { headers });
-        console.log(data);
-        if (data.message === 'success') {
-            setAlertOpen(true);
-            handleClose();
+        try {
+            const { data } = await api.post(`/mail`, newMail, { headers });
+            console.log(data);
+            if (data.message === 'success') {
+                setAlertOpen(true);
+                handleClose();
+            }
+            const newRandomUser = getRandomUser(users);
+            setRandomUser(newRandomUser);
+            console.log('hi');
+        } catch (err) {
+            console.log(err);
+            console.log('Please Login First');
+            setLoginAlertOpen(true);
         }
-        const newRandomUser = getRandomUser(users);
-        setRandomUser(newRandomUser);
     }
 
 
@@ -146,6 +154,7 @@ const Topic = ({ topics, users }) => {
                                 placeholder='Send your answer to a random user!'
                             >
                             </textarea>
+                            {loginAlertOpen && <div className='text-red-400'> Please Login First</div>}
                             <div className='flex justify-center mt-6'>
                                 <button
                                     className='px-3 py-1 rounded my-0 mx-auto bg-app-primary font-medium'
@@ -165,7 +174,7 @@ const Topic = ({ topics, users }) => {
                 </div>
                 <Snackbar open={alertOpen} autoHideDuration={6000} onClose={handleAlertClose}>
                     <Alert onClose={handleAlertClose} severity="success" sx={{ width: '100%' }}>
-                        This is a success message!
+                        Send successfully!
                     </Alert>
                 </Snackbar>
             </Paper>

@@ -174,10 +174,10 @@ export const Inbox = ({ user, token }) => {
         <p>Redirect to Login page now...</p>
       </div>
       :
-      <div className="flex h-full w-full justify-center">
+      <div className="flex flex-1 w-full justify-center">
 
         {/* 朋友欄位 */}
-        <div className="box-border border flex flex-col max-h-full my-6 ml-6 rounded min-w-[232px]">
+        <div className="box-border border flex flex-col max-h-full my-6 ml-6 rounded min-w-[275px]">
           <div className="bg-gray-100 h-15 px-1 py-1 border-b rounded-t">
             <Input placeholder="Search friends..." />
           </div>

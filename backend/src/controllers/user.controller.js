@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import userService from '../services/user.services.js';
 import hashPassword from '../helper/hashPassword.js';
 import { generateAccessToken } from '../helper/jwt.js';
+import { USER_PER_PAGE } from '../constants.js'
 
 
 const generateSigninResponse = (user) => {
@@ -141,19 +142,22 @@ const getFriends = async (req, res) => {
 const getRecommendUsers = async (req, res) => {
   // get from params
   const userId = req.query.userId
+  const pageNumber = parseInt(req.query.paging) || 0;
   try {
     let users;
-    const response = {
-      users: users
-    }
+
 
     if (!userId) {
-      users = await userService.getRandomUsers();
+      users = await userService.getRandomUsers(pageNumber);
     } else {
-      users = await userService.getSimilarUsers(userId);
+      users = await userService.getSimilarUsers(userId, pageNumber);
     }
 
-    response.users = users;
+    const response = {
+      users: users,
+      ...(users.length < USER_PER_PAGE ? {} : { next_paging: pageNumber + 1 })
+    }
+
     return res.status(200).send(response)
   } catch (error) {
     console.log(error)

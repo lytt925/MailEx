@@ -1,4 +1,5 @@
 import db from '../db.js'
+import { USER_PER_PAGE } from '../constants.js';
 
 async function createUser(userData) {
   const { username, email, provider, password, age, gender, profile_content, country_code } = userData;
@@ -85,16 +86,17 @@ const getFriendProfileById = async (id) => {
   }
 }
 
-const getSimilarUsers = async (id) => {
+
+const getSimilarUsers = async (id, pageNumber) => {
+  const offset = pageNumber * USER_PER_PAGE; // Calculate the offset
   const query = `
   SELECT u.id, u.username, u.age, u.gender, u.profile_content, u.card_content, c.country_name
   FROM users u
   JOIN countries c ON u.country_code = c.code
   WHERE u.id != ?
-  ORDER BY ABS(u.age - (SELECT age FROM users WHERE id = ?))
-  LIMIT 12;
+  ORDER BY ABS(u.age - (SELECT age FROM users WHERE id = ?)) 
+  LIMIT ${USER_PER_PAGE} OFFSET ${offset}
 `;
-
 
   try {
     const [rows] = await db.execute(
@@ -107,17 +109,18 @@ const getSimilarUsers = async (id) => {
   }
 }
 
-const getRandomUsers = async () => {
+const getRandomUsers = async (pageNumber) => {
+  const offset = pageNumber * USER_PER_PAGE; // Calculate the offset
   const query = `
   SELECT u.id, u.username, u.age, u.gender, u.profile_content, u.card_content, c.country_name
   FROM users u
   JOIN countries c ON u.country_code = c.code
   ORDER BY RAND()
-  LIMIT 12;
+  LIMIT ${USER_PER_PAGE} OFFSET ${offset}
 `;
 
   try {
-    const [rows] = await db.execute(query);
+    const [rows] = await db.execute(query, [USER_PER_PAGE, offset]);
     return rows;
   } catch (error) {
     throw error;

@@ -35,7 +35,7 @@ export const Navbar = () => {
       <nav className="">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-center sm:justify-between h-[64px] mx-auto px-8 py-4"></div>
       </nav >
-      <nav className="bg-app-primary shadow-md h-[64px] fixed w-screen z-10">
+      <nav className="bg-app-primary shadow-md h-[64px] fixed w-screen z-40">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-center sm:justify-between h-[64px] mx-auto px-8 py-4">
           <Link href={'/'} className='flex flex-1 items-center h-8 align-middle justify-center sm:justify-start'>
             <span className={`${baloo.className} pt-1 text-app-content font-bold text-[36px] align-middle px-6 tracking-wider`}>
@@ -49,7 +49,7 @@ export const Navbar = () => {
                 <IconMailoutline className="cursor-pointer z-10 text-app-content text-2xl" />
               </Link>
               <div className='cursor-pointer'>
-                <Link className="cursor-pointer group relative flex justify-center items-center text-app-content font-bold tracking-wide" href={'/'}>
+                <Link href={'/explore'} className="cursor-pointer group relative flex justify-center items-center text-app-content font-bold tracking-wide" >
                   <div className='cursor-pointer absolute h-10 w-10 rounded-full group-hover:bg-app-primary-light' ></div>
                   <FiGlobe className='cursor-pointer z-10' size={'24px'} />
                 </Link>

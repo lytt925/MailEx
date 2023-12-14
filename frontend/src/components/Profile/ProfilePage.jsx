@@ -42,13 +42,13 @@ const ProfilePage = ({ userInfo }) => {
   }
 
   return (
-    <section className="flex flex-col items-center justify-center w-full h-full">
-      <div className="flex flex-col my-6 w-[910px] h-[100%]">
+    <section className="flex flex-col items-center justify-center w-full ">
+      <div className="flex flex-col my-6 w-[910px]">
         {PositionedSnackbar({ message, alertOpen, handleAlertClose, vertical, horizontal })}
         <div className='w-full flex justify-start mb-5'>
           <p className='text-xl font-semibold'>User Profile</p>
         </div>
-        <div className='w-full flex flex-col border shadow-md rounded'>
+        <div className='w-full flex flex-col border shadow-md rounded h-full'>
           <p className='px-5 py-3 text-lg font-semibold border-b border-gray-300 w-full'>Basic Info</p>
           <div className='flex flex-col w-full p-5'>
             <div className='flex flex-row items-center px-5 py-2 gap-3'>
@@ -74,7 +74,7 @@ const ProfilePage = ({ userInfo }) => {
               <div>
                 <Input handleChange={handleChange} labelText='One Line Bio' labelFor='profile_content' id='profile_content' name='profile_content' type='textarea' value={currentUserInfo.profile_content} maxLength={85} customClass={'h-12'} />
               </div>
-              <Input handleChange={handleChange} labelText='Introduction Card' labelFor='card_content' id='card_content' name='card_content' type='textarea' value={currentUserInfo.card_content} max={800} customClass={'h-40'} />
+              <Input handleChange={handleChange} labelText='Introduction Card' labelFor='card_content' id='card_content' name='card_content' type='textarea' value={currentUserInfo.card_content} max={800} customClass={'h-60'} />
             </div>
             <Button variant="contained" sx={{ width: '120px', margin: "0 auto" }} className='bg-app-primary' onClick={handleSave}>
               Save

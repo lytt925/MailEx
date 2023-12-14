@@ -75,7 +75,7 @@ export const Inbox = ({ user, token }) => {
     if (isSending && selectedMail?.status === 'sending') {
       setIsSending(false);
     }
-  }, [setIsSending, isSending])
+  }, [setIsSending, isSending, selectedMail?.status])
 
   useEffect(() => {
     if (!selectedFriendId && friendsList.length > 0 && mails.length > 0) {
@@ -103,7 +103,7 @@ export const Inbox = ({ user, token }) => {
 
 
   const mutationSave = useSaveMail(token);
-  const mutationSend = useSendMail(token, setIsSending, setIsEditting);
+  const mutationSend = useSendMail(token);
 
   const handleSave = async () => {
     console.log("content", selectedMail.content)

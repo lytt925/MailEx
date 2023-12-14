@@ -83,6 +83,8 @@ const Topic = ({ topics, users }) => {
             setAlertOpen(true);
             handleClose();
         }
+        const newRandomUser = getRandomUser(users);
+        setRandomUser(newRandomUser);
     }
 
 

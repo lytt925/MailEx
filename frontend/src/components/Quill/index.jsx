@@ -4,6 +4,7 @@ import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 import 'react-quill/dist/quill.bubble.css'; // Import Quill styles
 import styles from './quill.module.css';
 import Loader from '../Inbox/loader';
+import { is } from 'date-fns/locale';
 
 const QuillEditor = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -39,8 +40,9 @@ const bindings = {
 }
 
 
-export default function Quill({ userId, setMails, selectedMail, handleSave, isEditting, setIsEditting }) {
+export default function Quill({ userId, mails, setMails, selectedMail, handleSave, setIsSaved, isEditting, setIsEditting }) {
     const [newContent, setNewContent] = useState(selectedMail?.content);
+    const [timer, setTimer] = useState(null);
 
     let arrivedDate;
     if (selectedMail?.arrived_at) {
@@ -48,10 +50,6 @@ export default function Quill({ userId, setMails, selectedMail, handleSave, isEd
     }
     const arrived = selectedMail?.arrived_at && arrivedDate < new Date();
     const isSenderMe = (selectedMail?.sender_id === userId)
-
-    if (newContent !== selectedMail?.content) {
-        setNewContent(selectedMail?.content)
-    }
 
     bindings.customSave = {
         key: 'S',
@@ -79,13 +77,41 @@ export default function Quill({ userId, setMails, selectedMail, handleSave, isEd
     };
 
     const handleEditorChange = (newContent) => {
+        console.log(newContent)
         setNewContent(newContent);
-        setMails(prev => {
-            const index = prev.findIndex(mail => mail.id === selectedMail.id)
-            prev[index].content = newContent
-            return [...prev]
-        })
+
+        // find the selectedMail in mails
+        const selectedMailIndex = mails.findIndex(mail => mail.id === selectedMail.id);
+        // update the content
+        const newMails = [...mails];
+        newMails[selectedMailIndex].content = newContent;
+        setMails(newMails);
+
+        // Clear the existing timer
+        if (timer) {
+            clearTimeout(timer);
+        }
+
+        // Set a new timer
+        const newTimer = setTimeout(() => {
+            if (isEditting) {
+                handleSave(); // Call the save function after 3 seconds of inactivity
+                setIsSaved(true);
+            }
+        }, 3000); // 3000 milliseconds = 3 seconds
+
+        setTimer(newTimer);
     };
+
+    // Clean up the timer on component unmount
+    useEffect(() => {
+        return () => {
+            if (timer) {
+                setIsSaved(false);
+                clearTimeout(timer);
+            }
+        };
+    }, [timer]);
 
     return (
         <div className="flex items-center flex-col h-full max-w-full">

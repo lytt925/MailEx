@@ -25,6 +25,7 @@ export const Inbox = ({ user, token }) => {
   const [isSending, setIsSending] = useState(false)
   const [isEditting, setIsEditting] = useState(false);
   const [newMailId, setNewMailId] = useState(null);
+  const [isSaved, setIsSaved] = useState(false);
 
   const { ref, inView } = useInView()
   const {
@@ -36,6 +37,16 @@ export const Inbox = ({ user, token }) => {
     hasNextPage,
   } = useMails(user.userId, token);
   const { status: friendStatus, friendsList } = useFriendsList();
+
+  const friendMails = mails.filter(mail => mail.receiver_id === selectedFriendId || mail.sender_id === selectedFriendId)
+  const selectedMail = friendMails.find(mail => mail.id === selectedMailId);
+
+
+
+  const selectedFriend = friendsList.find(friend => friend.id === selectedFriendId);
+  const isSelectedMailArrived = selectedMail && (new Date(selectedMail.arrived_at) < new Date());
+  const isSelectedMailMine = selectedMail && (selectedMail.sender_id == user.userId);
+
 
   useEffect(() => {
     if (data?.pages) {
@@ -71,7 +82,6 @@ export const Inbox = ({ user, token }) => {
     }
   }, [friendsList, selectedFriendId, mails, user.userId])
 
-  const friendMails = mails.filter(mail => mail.receiver_id === selectedFriendId || mail.sender_id === selectedFriendId)
 
   // useEffect 可
   if (friendMails.length > 0 && (friendMails.some(mail => mail.id === selectedMailId) === false)) {
@@ -88,15 +98,12 @@ export const Inbox = ({ user, token }) => {
     }
   }, [inView, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage])
 
-  const selectedMail = friendMails.find(mail => mail.id === selectedMailId);
-  const selectedFriend = friendsList.find(friend => friend.id === selectedFriendId);
-  const isSelectedMailArrived = selectedMail && (new Date(selectedMail.arrived_at) < new Date());
-  const isSelectedMailMine = selectedMail && (selectedMail.sender_id == user.userId);
 
   const mutationSave = useSaveMail(token);
   const mutationSend = useSendMail(token, setIsSending, setIsEditting);
 
   const handleSave = async () => {
+    console.log("content", selectedMail.content)
     if (!selectedMail) {
       return;
     }
@@ -312,14 +319,22 @@ export const Inbox = ({ user, token }) => {
                   await handleSave();
               }}>
                 <Quill
-                  key={selectedMailId} userId={user.userId} setMails={setMails} selectedMail={selectedMail} handleSave={handleSave} isEditting={isEditting} setIsEditting={setIsEditting}
+                  key={selectedMailId}
+                  selectedMail={selectedMail}
+                  userId={user.userId}
+                  setIsSaved={setIsSaved}
+                  handleSave={handleSave}
+                  mails={mails}
+                  setMails={setMails}
+                  isEditting={isEditting}
+                  setIsEditting={setIsEditting}
                 />
               </div>
               <div className="mt-2">
-                {/* <Editor /> */}
                 {
                   selectedMail?.status === 'draft' &&
-                  <div className="flex justify-end">
+                  <div className="flex justify-between items-end">
+                    <div className='text-sm text-gray-400'>{isSaved && isEditting ? 'Saved' : ''}</div>
                     <button
                       key={selectedMailId + isSending}
                       className="flex justify-center items-center font-semibold text-xl bg-app-primary rounded-lg text-app-content px-3 py-3"

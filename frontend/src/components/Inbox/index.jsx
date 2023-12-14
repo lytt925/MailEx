@@ -52,7 +52,7 @@ export const Inbox = ({ user, token }) => {
     if (data?.pages) {
       const aggregatedData =
         data.pages
-          .flatMap(page => page.mails)
+          .flatMap(page => page?.mails)
           .filter(mail => (mail.sender_id == user.userId) || (mail.receiver_id == user.userId && mail.status !== 'draft'))
           .sort((a, b) => new Date(b.arrived_at || b.updated_at || b.created_at) - new Date(b.arrived_at || a.updated_at || a.created_at));
 
@@ -181,7 +181,7 @@ export const Inbox = ({ user, token }) => {
         <p>Redirect to Login page now...</p>
       </div>
       :
-      <div className="flex flex-1 w-full justify-center">
+      <div className="flex h-custom-fix w-full">
 
         {/* 朋友欄位 */}
         <div className="box-border border flex flex-col max-h-full my-6 ml-6 rounded min-w-[275px]">
@@ -268,15 +268,16 @@ export const Inbox = ({ user, token }) => {
                         value={selectedMail.subject}
                         readonly={!isEditting}
                         onChange={(e) => {
+                          console.log(e.target.value)
                           if (e.target.value.length > 20) {
                             return;
                           }
-                          if (e.target.value.length == 0) {
+                          if (e.target.value.length === 0) {
                             e.target.value = ' ';
                           }
                           const newMails = mails.map(mail => {
                             if (mail.id === selectedMail.id) {
-                              mail.subject = e.target.value.trim();
+                              mail.subject = e.target.value
                             }
                             return mail;
                           })
@@ -320,7 +321,7 @@ export const Inbox = ({ user, token }) => {
               }}>
                 <Quill
                   key={selectedMailId}
-                  selectedMail={selectedMail}
+                  selectedMailId={selectedMailId}
                   userId={user.userId}
                   setIsSaved={setIsSaved}
                   handleSave={handleSave}

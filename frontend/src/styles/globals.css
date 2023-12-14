@@ -35,6 +35,10 @@ input:-internal-autofill-selected  {
   min-height: calc(100vh - 64px);
 }
 
+.h-custom-fix {
+  height: calc(100vh - 64px);
+}
+
 .editorContainer .ql-editor {
   @apply scrollbar-thin scrollbar-thumb-gray-100;
 }

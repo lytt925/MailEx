@@ -40,7 +40,8 @@ const bindings = {
 }
 
 
-export default function Quill({ userId, mails, setMails, selectedMail, handleSave, setIsSaved, isEditting, setIsEditting }) {
+export default function Quill({ userId, mails, setMails, selectedMailId, handleSave, setIsSaved, isEditting, setIsEditting }) {
+    const selectedMail = mails.find(mail => mail.id === selectedMailId);
     const [newContent, setNewContent] = useState(selectedMail?.content);
     const [timer, setTimer] = useState(null);
 
@@ -81,7 +82,7 @@ export default function Quill({ userId, mails, setMails, selectedMail, handleSav
         setNewContent(newContent);
 
         // find the selectedMail in mails
-        const selectedMailIndex = mails.findIndex(mail => mail.id === selectedMail.id);
+        const selectedMailIndex = mails.findIndex(mail => mail.id === selectedMailId);
         // update the content
         const newMails = [...mails];
         newMails[selectedMailIndex].content = newContent;
@@ -98,7 +99,7 @@ export default function Quill({ userId, mails, setMails, selectedMail, handleSav
                 handleSave(); // Call the save function after 3 seconds of inactivity
                 setIsSaved(true);
             }
-        }, 3000); // 3000 milliseconds = 3 seconds
+        }, 2500); // 2500 milliseconds = 3 seconds
 
         setTimer(newTimer);
     };

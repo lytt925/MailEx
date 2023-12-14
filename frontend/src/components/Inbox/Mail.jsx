@@ -54,7 +54,7 @@ export const Mail = ({ mail, isSelected, setSelectedMail, userId }) => {
         arrived || isSenderMe ?
             <div onClick={handleClick} className={`${isReceiverMe ? "" : ""} min-h-[120px] flex hover:bg-gray-100 border-y border-gray-100 ${isSelected ? 'bg-gray-100' : ''}`}>
                 <div className={`w-1 min-w-4 ${isSelected ? 'bg-app-primary' : ''}`}></div>
-                <div className="flex flex-col flex-grow p-4 cursor-pointer max-w-[97%]">
+                <div className="flex flex-col w-[95%] p-4 cursor-pointer max-w-[100%]">
                     <div className='flex items-start justify-between mb-1'>
                         <div className="text-sm text-app-content mb-1 font-medium">@{mail.sender_username}</div>
                         <div className="text-sm text-gray-400">{formattedDate}</div>

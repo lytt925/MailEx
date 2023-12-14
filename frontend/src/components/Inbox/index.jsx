@@ -16,6 +16,7 @@ import { MdEdit } from "react-icons/md";
 import { EditText } from 'react-edit-text';
 import 'react-edit-text/dist/index.css';
 import Countdown from 'react-countdown';
+import { el } from 'date-fns/locale';
 
 export const Inbox = ({ user, token }) => {
   const [, forceUpdate] = useReducer(x => x + 1, 0);
@@ -62,10 +63,6 @@ export const Inbox = ({ user, token }) => {
         setSelectedMailId(aggregatedData[0]?.id);
       }
 
-      if (isSending) {
-        setIsSending(false);
-      }
-
       if (friendsList.length > 0 && !selectedFriendId && selectedMailId) {
         const friend = friendsList.find(friend => friend.id == aggregatedData[0].sender_id || friend.id == aggregatedData[0].receiver_id);
         setSelectedFriendId(friend.id);
@@ -73,6 +70,12 @@ export const Inbox = ({ user, token }) => {
     }
   }, [data, friendsList, setIsSending, isSending, selectedFriendId, selectedMailId, user.userId, newMailId]);
 
+
+  useEffect(() => {
+    if (isSending && selectedMail?.status === 'sending') {
+      setIsSending(false);
+    }
+  }, [setIsSending, isSending])
 
   useEffect(() => {
     if (!selectedFriendId && friendsList.length > 0 && mails.length > 0) {
@@ -112,7 +115,7 @@ export const Inbox = ({ user, token }) => {
       return;
     }
 
-    mutationSave.mutate(
+    await mutationSave.mutateAsync(
       { mail: selectedMail }
     );
   }
@@ -147,7 +150,7 @@ export const Inbox = ({ user, token }) => {
       arrived_at: new Date(new Date().getTime() + (distance / SPEED_PER_HOUR) * 60 * 60 * 1000),
     }
 
-    mutationSend.mutate({ mail: changedMail }, {});
+    await mutationSend.mutateAsync({ mail: changedMail }, {});
   }
 
   const handleNewMail = async () => {
@@ -283,11 +286,11 @@ export const Inbox = ({ user, token }) => {
                           })
                           setMails(newMails);
                         }}
-                        onBlur={async () => {
-                          if (!selectedMail.isNew) {
-                            await handleSave()
-                          }
-                        }}
+                      // onBlur={async () => {
+                      //   if (!selectedMail.isNew) {
+                      //     await handleSave()
+                      //   }
+                      // }}
                       />
                       {
                         selectedMail.status == 'draft'

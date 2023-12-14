@@ -237,8 +237,10 @@ router.get('/friends', jwtAuthentication, userController.getFriends);
 router.get('/usercards', userController.getRecommendUsers);
 
 
+router.get('/profile', userController.getUserProfile);
+router.patch('/profile', jwtAuthentication, userController.updateUserProfile);
+
 router.post('/logout', (req, res) => {
-  console.log("logout")
   // Overwrite the cookie with an expired one
   res.cookie('userId', '', {
     expires: new Date(0), // Set an expiration date in the past to delete the cookie

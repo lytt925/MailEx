@@ -10,6 +10,9 @@ import { IoIosArrowDown } from "react-icons/io";
 import { GiFlowerPot } from "react-icons/gi";
 import { FaCanadianMapleLeaf } from "react-icons/fa";
 import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import { RxCross1 } from "react-icons/rx";
+
 import api from '@/api';
 import { useUser } from '@/hooks/useUserContext';
 
@@ -20,8 +23,8 @@ const style = {
     transform: 'translate(-50%, -50%)',
     width: 400,
     bgcolor: 'background.paper',
-    borderRadius: '20px',
-    boxShadow: 24,
+    borderRadius: '10px',
+    boxShadow: 12,
     p: '32px',
 };
 
@@ -113,6 +116,7 @@ function UserCard({ userProfile, onClick }) {
                     <Box sx={style}>
                         <Typography id="modal-modal-title" variant="h5" component="h2">
                             About me
+                            <RxCross1 className='text-base absolute top-5 right-5 cursor-pointer' onClick={handleClose} />
                         </Typography>
                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                             {card_content}
@@ -132,7 +136,25 @@ function UserCard({ userProfile, onClick }) {
     );
 }
 
+
+
 function PositionedSnackbar({ message, alertOpen, handleAlertClose, vertical, horizontal }) {
+    const action = (
+        <React.Fragment>
+            <Button color="primary" size="small" onClick={handleAlertClose}>
+                GO TO MAILBOX
+            </Button>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleAlertClose}
+            >
+                <RxCross1 className='text-base' />
+            </IconButton>
+        </React.Fragment>
+    );
+
     return (
         <Snackbar
             anchorOrigin={{ vertical, horizontal }}
@@ -141,6 +163,7 @@ function PositionedSnackbar({ message, alertOpen, handleAlertClose, vertical, ho
             onClose={handleAlertClose}
             message={message}
             key={vertical + horizontal}
+            action={action}
         />
     );
 }

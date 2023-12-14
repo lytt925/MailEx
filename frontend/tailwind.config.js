@@ -44,10 +44,10 @@ module.exports = {
       backgroundImage: theme => ({
         'note-pattern': `linear-gradient(to right, white 1px, transparent 1px),
                          linear-gradient(to left, white 1px, transparent 1px),
-                         repeating-linear-gradient(white, white 30px, #ccc 30px, #ccc 31px, white 31px)`
+                         repeating-linear-gradient(white, white 24px, #ccc 24px, #ccc 25px, white 25px)`
       }),
       lineHeight: {
-        'custom': '31px'
+        'custom': '25px'
       }
     },
   },

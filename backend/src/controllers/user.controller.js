@@ -23,7 +23,7 @@ const generateSigninResponse = (user) => {
 }
 
 const signupUser = async (req, res) => {
-  const { username, email, password, provider } = req.body
+  const { username, email, password, provider, age, gender, profile_content, country_code } = req.body
 
   // check if user exists
   const existUser = await userService.getUserByEmailorUsername(email, null, ['id']);
@@ -33,7 +33,7 @@ const signupUser = async (req, res) => {
 
   try {
     const hash = await hashPassword(password);
-    const user = await userService.createUser({ username, email, password: hash, provider });
+    const user = await userService.createUser({ username, email, password: hash, provider, age, gender, profile_content, country_code });
     // Create the access token
     const response = generateSigninResponse(user);
     return res.status(200).send(response)
@@ -90,7 +90,7 @@ const loginUser = async (req, res) => {
       res.cookie('userId', user.id, {
         path: '/',
         httpOnly: true,
-        maxAge: 3600000,
+        maxAge: 3600000000,
         sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
         secure: process.env.NODE_ENV === 'production'
       });
@@ -101,6 +101,23 @@ const loginUser = async (req, res) => {
 
   } catch (err) {
     console.log(err)
+    return res.status(500).send({ error: "Internal Server Error" })
+  }
+}
+
+
+const getUserProfile = async (req, res) => {
+  const userId = req.query.userId
+  console.log(req.query)
+  console.log(userId)
+  try {
+    const user = await userService.getUserById(userId);
+    const response = {
+      user: user
+    }
+    return res.status(200).send(response)
+  } catch (error) {
+    console.log(error)
     return res.status(500).send({ error: "Internal Server Error" })
   }
 }
@@ -144,9 +161,22 @@ const getRecommendUsers = async (req, res) => {
   }
 }
 
+const updateUserProfile = async (req, res) => {
+  const { email, age, gender, profile_content, country_code, card_content } = req.body
+  const userId = req.tokenPayload.id
+  const result = await userService.updateUserProfileById(userId, { email, age, gender, profile_content, country_code, card_content });
+  if (result) {
+    return res.status(200).send({ message: "success" })
+  } else {
+    return res.status(500).send({ error: "Internal Server Error" })
+  }
+}
+
 export default {
   signupUser,
   loginUser,
   getFriends,
-  getRecommendUsers
+  getRecommendUsers,
+  getUserProfile,
+  updateUserProfile
 }

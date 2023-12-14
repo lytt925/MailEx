@@ -1,11 +1,12 @@
 import db from '../db.js'
 
 async function createUser(userData) {
-  const { username, email, provider, password } = userData;
+  const { username, email, provider, password, age, gender, profile_content, country_code } = userData;
   try {
     const [result] = await db.execute(
-      'INSERT INTO users (username, email, password, provider) VALUES (?, ?, ?, ?)',
-      [username, email, password, provider]
+      `INSERT INTO users (username, email, password, provider, age, gender, profile_content, country_code)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [username, email, password, provider, age, gender, profile_content, country_code]
     );
 
     const { insertId } = result;
@@ -123,12 +124,48 @@ const getRandomUsers = async () => {
   }
 }
 
+const getUserById = async (id) => {
+  try {
+    let query = 'SELECT users.*, countries.country_name FROM users INNER JOIN countries ON users.country_code = countries.code WHERE users.id = ?';
+    const [rows] = await db.execute(query, [id]);
+
+    if (rows.length === 0) {
+      return null;
+    }
+
+    delete rows[0].password;
+    return rows[0];
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+const updateUserProfileById = async (userId, userData) => {
+  const { email, age, gender, profile_content, country_code, card_content } = userData;
+  try {
+    const [result] = await db.execute(
+      `UPDATE users
+       SET email = ?, age = ?, gender = ?, profile_content = ?, country_code = ?, card_content = ?
+       WHERE id = ?`,
+      [email, age, gender, profile_content, country_code, card_content, userId]
+    );
+    const { affectedRows } = result;
+    return affectedRows
+  } catch (error) {
+    console.error('Error creating new user:', error);
+    throw error;
+  }
+}
+
 
 export default {
   createUser,
+  getUserById,
   getUserByEmailorUsername,
   getFriendsById,
   getFriendProfileById,
   getSimilarUsers,
-  getRandomUsers
+  getRandomUsers,
+  updateUserProfileById
 }

@@ -28,7 +28,7 @@ const createMail = async (req, res) => {
   const mailBody = { ...req.body, sender_id }
   const mailId = await mailService.createMail(mailBody);
   if (mailId) {
-    res.status(200).send({ message: "Created successfully" });
+    res.status(200).send({ message: "success", mailId });
   } else {
     res.status(404).send({ message: "Failed to create or update" });
   }

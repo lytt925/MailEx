@@ -24,7 +24,6 @@ export function LoginPanel() {
     const { user: { userId }, setUser, setToken } = useUser();
     if (userId !== '') {
         router.push(decodeURIComponent(redirectTo) || '/');
-        if (isLoading) setIsLoading(false);
     }
 
     // Handle input changes

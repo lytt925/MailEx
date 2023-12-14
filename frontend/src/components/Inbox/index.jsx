@@ -24,6 +24,7 @@ export const Inbox = ({ user, token }) => {
   const [selectedMailId, setSelectedMailId] = useState(null)
   const [isSending, setIsSending] = useState(false)
   const [isEditting, setIsEditting] = useState(false);
+  const [newMailId, setNewMailId] = useState(null);
 
   const { ref, inView } = useInView()
   const {
@@ -59,7 +60,7 @@ export const Inbox = ({ user, token }) => {
         setSelectedFriendId(friend.id);
       }
     }
-  }, [data, friendsList, setIsSending, isSending, selectedFriendId, selectedMailId, user.userId]);
+  }, [data, friendsList, setIsSending, isSending, selectedFriendId, selectedMailId, user.userId, newMailId]);
 
 
   useEffect(() => {
@@ -71,8 +72,14 @@ export const Inbox = ({ user, token }) => {
   }, [friendsList, selectedFriendId, mails, user.userId])
 
   const friendMails = mails.filter(mail => mail.receiver_id === selectedFriendId || mail.sender_id === selectedFriendId)
-  if (friendMails.length > 0 && friendMails.some(mail => mail.id === selectedMailId) === false) {
+
+  // useEffect 可
+  if (friendMails.length > 0 && (friendMails.some(mail => mail.id === selectedMailId) === false)) {
     setSelectedMailId(friendMails[0].id)
+  } else if (newMailId && mails.some(mail => mail.id === newMailId)) {
+    setSelectedMailId(newMailId);
+    setIsEditting(true);
+    setNewMailId(null);
   }
 
   useEffect(() => {
@@ -134,11 +141,12 @@ export const Inbox = ({ user, token }) => {
     }
 
     mutationSend.mutate({ mail: changedMail }, {});
-
   }
 
   const handleNewMail = async () => {
-    await handleSave();
+    if (isEditting) {
+      await handleSave();
+    }
     const newMail = {
       id: -1,
       isNew: true,
@@ -151,14 +159,17 @@ export const Inbox = ({ user, token }) => {
       status: 'draft',
       created_at: new Date(),
     }
-    setMails([newMail, ...mails]);
-    setSelectedMailId(newMail.id);
-    setIsEditting(true);
+    // setMails([newMail, ...mails]);
+    // setSelectedMailId(newMail.id);
+    const mailId = await mutationSave.mutateAsync(
+      { mail: newMail }
+    );
+    setNewMailId(mailId);
   }
 
   return (
     (!user.userId && status === 'success') ?
-      <div>
+      <div className='flex w-full justify-center my-8 items-center'>
         <CircularProgress sx={{ color: "black", margin: 'auto' }} />
         <p>Redirect to Login page now...</p>
       </div>

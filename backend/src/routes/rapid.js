@@ -22,7 +22,7 @@ async function getDistance(country1_lat, country1_lng, country2_lat, country2_ln
 
   try {
     const response = await axios.request(options);
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);

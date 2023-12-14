@@ -32,7 +32,7 @@ export default function App({ Component, pageProps }) {
           <ThemeProvider theme={theme}>
             <main className={`flex flex-col min-h-screen ${noto.className}`}>
               <Navbar />
-              <div className="flex justify-center items-center h-custom w-full xl:max-w-[1300px] text-lg my-0 mx-auto"> {/* w-full */}
+              <div className="flex justify-center h-custom w-full xl:max-w-[1300px] text-lg my-0 mx-auto"> {/* w-full */}
                 <Component {...pageProps} />
                 <ReactQueryDevtools initialIsOpen={false} />
               </div>

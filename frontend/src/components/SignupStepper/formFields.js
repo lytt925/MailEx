@@ -1,7 +1,3 @@
-// import language json
-import languages from '@/api/languages.json';
-import countries from '@/api/countries.json';
-
 const signupFields = [
   {
     labelText: "Username",
@@ -15,8 +11,8 @@ const signupFields = [
   },
   {
     labelText: "Email address",
-    labelFor: "email-address",
-    id: "email-address",
+    labelFor: "email",
+    id: "email",
     name: "email",
     type: "email",
     autoComplete: "email",
@@ -33,54 +29,57 @@ const signupFields = [
     isRequired: true,
     placeholder: "Password"
   },
-  {
-    labelText: "Confirm Password",
-    labelFor: "confirm-password",
-    id: "confirm-password",
-    name: "confirm-password",
-    type: "password",
-    autoComplete: "confirm-password",
-    isRequired: true,
-    placeholder: "Confirm Password"
-  }
+  // {
+  //   labelText: "Confirm Password",
+  //   labelFor: "confirm-password",
+  //   id: "confirmPassword",
+  //   name: "confirm-password",
+  //   type: "password",
+  //   autoComplete: "confirm-password",
+  //   isRequired: true,
+  //   placeholder: "Confirm Password"
+  // }
 ]
 
-
-const basicInfo = [
+const basicInfo2 = [
   {
-    labelText: "Country",
-    labelFor: "country",
-    id: "country",
-    name: "country",
-    type: "select",
-    autoComplete: "country",
+    labelText: "Age",
+    labelFor: "age",
+    id: "age",
+    name: "age",
+    type: "number",
     isRequired: true,
-    options: countries.countries
+    placeholder: "age"
   },
   {
-    labelText: "Language",
-    labelFor: "language",
-    id: "language",
-    name: "language",
+    labelText: "Gender",
+    labelFor: "gender",
+    id: "gender",
+    name: "gender",
     type: "select",
     isRequired: true,
-    options: languages.languages
-  },
-  {
-    labelText: "Level",
-    labelFor: "proficiency_level",
-    id: "proficiency_level",
-    name: "proficiency_level",
-    type: "select",
-    isRequired: true,
+    placeholder: "Gender",
     options: [
-      { value: "beginner", label: "Beginner" },
-      { value: "elementary", label: "Elementary" },
-      { value: "intermediate", label: "Intermediate" },
-      { value: "proficient", label: "Proficient" },
-      { value: "native", label: "Native" }
+      { value: "male", label: "Male" },
+      { value: "female", label: "Female" },
+      { value: "others", label: "Others" },
     ]
   }
 ]
 
-export { signupFields, basicInfo }
+// max 85 char
+const oneLineBio = [
+  {
+    labelText: "Short introduction about yourself",
+    labelFor: "profile_content",
+    id: "profile_content",
+    name: "profile_content",
+    type: "textarea",
+    autoComplete: "one-line-bio",
+    isRequired: false,
+    placeholder: "Write a short introduction about yourself",
+    maxLength: 85
+  }
+]
+
+export { signupFields, basicInfo2, oneLineBio }

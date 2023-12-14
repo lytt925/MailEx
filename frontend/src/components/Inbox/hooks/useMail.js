@@ -59,6 +59,8 @@ const saveMail = async (mail, token) => {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer ' + token
   };
+
+  let mailId = mail?.id
   if (mail.id !== -1) {
     const { data } = await axios.patch(`/mail/${mail.id}`, {
       senderId: mail.sender_id,
@@ -66,7 +68,6 @@ const saveMail = async (mail, token) => {
       newContent: mail.content,
     }, { headers });
     console.log(data.message, mail.subject);
-
   } else {
     const { data } = await axios.post(`/mail`, {
       sender_id: mail.sender_id,
@@ -76,18 +77,20 @@ const saveMail = async (mail, token) => {
       status: mail.status,
     }, { headers });
     console.log(data.message, mail.subject);
+    mailId = data.mailId
   }
+  return mailId;
 }
 
 export const useSaveMail = (token) => {
   const queryClient = useQueryClient()
   return useMutation(
     {
-      mutationFn: async ({ mail }) => { saveMail(mail, token) },
+      mutationFn: async ({ mail }) => { return saveMail(mail, token) },
       onSuccess: () => {
         setTimeout(() => {
           queryClient.invalidateQueries(['mails']);
-        }, 500); // Adjust the delay as needed
+        }, 300); // Adjust the delay as needed
       }
     }
   )

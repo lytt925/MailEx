@@ -8,9 +8,9 @@ const withAuth = (WrappedComponent) => {
   function WithAuthComponent(props) {
     const { user, token, location } = useUser();
     const router = useRouter();
-    console.log(`/login?redirect=${encodeURIComponent(router.asPath)}`)
+
     useEffect(() => {
-      console.log(`/login?redirect=${encodeURIComponent(router.asPath)}`)
+
       try {
         const token = localStorage.getItem('jwt');
         if (!token) {

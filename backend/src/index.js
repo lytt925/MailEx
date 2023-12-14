@@ -23,6 +23,7 @@ const app = express()
 app.use(express.json());
 const allowedOrigins = [
   'http://localhost:3000',
+  'http://localhost:4000',
   'https://44.217.27.217',
   'https://ec2-44-217-27-217.compute-1.amazonaws.com',
   'http://44.217.27.217',

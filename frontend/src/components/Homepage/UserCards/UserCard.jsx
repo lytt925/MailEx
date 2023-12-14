@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -50,6 +51,7 @@ async function addFriend(userId, friendId, token) {
 
 function UserCard({ userProfile, onClick }) {
     const { user, token } = useUser();
+    const router = useRouter();
     const visibility = React.useContext(VisibilityContext);
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -94,11 +96,15 @@ function UserCard({ userProfile, onClick }) {
 
     const { id, age, gender, profile_content, username, country_name, card_content } = userProfile
 
+    const handleRouteToMailbox = () => {
+        router.push('/mailbox');
+    }
+
     const iconClassName = 'absolute top-[200px] left-[170px] text-[60px] text-gray-200'
 
     return (
         <Paper elevation={2} onClick={() => onClick(visibility)} tabIndex={0} className='border-2 border-gray-500 relative h-[300px] w-[250px] bg-[#fffbf2] p-3 rounded-3xl'>
-            {PositionedSnackbar({ message, alertOpen, handleAlertClose, vertical, horizontal })}
+            {PositionedSnackbar({ message, alertOpen, handleAlertClose, vertical, horizontal, handleRouteToMailbox })}
             {randomIcon}
             <div className='border-gray-500 border h-full rounded-2xl z-10 flex flex-col items-center'>
                 <div className='flex flex-col items-center'>
@@ -138,10 +144,10 @@ function UserCard({ userProfile, onClick }) {
 
 
 
-function PositionedSnackbar({ message, alertOpen, handleAlertClose, vertical, horizontal }) {
+function PositionedSnackbar({ message, alertOpen, handleAlertClose, vertical, horizontal, handleRouteToMailbox }) {
     const action = (
         <React.Fragment>
-            <Button color="primary" size="small" onClick={handleAlertClose}>
+            <Button color="primary" size="small" onClick={handleRouteToMailbox}>
                 GO TO MAILBOX
             </Button>
             <IconButton
@@ -163,7 +169,7 @@ function PositionedSnackbar({ message, alertOpen, handleAlertClose, vertical, ho
             onClose={handleAlertClose}
             message={message}
             key={vertical + horizontal}
-            action={action}
+            action={message === 'Please login first!' ? '' : action}
         />
     );
 }

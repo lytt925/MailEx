@@ -149,7 +149,7 @@ function PositionedSnackbar({ message, alertOpen, handleAlertClose, vertical, ho
             onClose={handleAlertClose}
             message={message}
             key={vertical + horizontal}
-            action={action}
+            action={message === 'Please login first!' ? '' : action}
         />
     );
 }

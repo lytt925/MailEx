@@ -90,7 +90,7 @@ export const useSaveMail = (token) => {
       onSuccess: () => {
         setTimeout(() => {
           queryClient.invalidateQueries(['mails']);
-        }, 300); // Adjust the delay as needed
+        }, 200); // Adjust the delay as needed
       }
     }
   )

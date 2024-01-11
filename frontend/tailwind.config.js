@@ -8,12 +8,48 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      fontFamily: {
+        'baloo': ['Baloo Paaji 2', 'cursive'],
+        'sans': ['Noto Sans TC', 'sans-serif'],
       },
+      colors: {
+        app: {
+          'grey': '#F5F1ED',
+          'content': 'rgb(var(--content-rgb) / 1)',
+          'primary': 'rgb(var(--primary-rgb) / 1)',
+          'primary-light': 'rgb(var(--secondary-rgb) / 1)',
+          'pale-primary': '#f5eddf',
+          'light-green': '#ccd5ae',
+          'white': '#fffaf0',
+        },
+        backup: {
+          'grey': '#F5F1ED',
+          'dark-brown': '#000000',
+          'primary': '#f5b53d', // HSV(39°, 75%, 96%)
+          'secondary': '#f5cc7f',
+          'pale-primary': '#f5eddf',
+          'light-green': '#ccd5ae',
+          'white': '#fffaf0',
+        }
+      },
+      screens: {
+        '2xs': '375px',
+        'xs': '475px',
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1536px',
+      },
+      backgroundImage: theme => ({
+        'note-pattern': `linear-gradient(to right, white 1px, transparent 1px),
+                         linear-gradient(to left, white 1px, transparent 1px),
+                         repeating-linear-gradient(white, white 24px, #ccc 24px, #ccc 25px, white 25px)`
+      }),
+      lineHeight: {
+        'custom': '25px'
+      }
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require('tailwind-scrollbar')],
 }

@@ -19,7 +19,7 @@ const options = {
       { url: NODE_ENV === 'development' ? `${BASE_URL}:${PORT}/api/1.0` : `${BASE_URL}/api/1.0` },
     ]
   },
-  apis: ['src/index.js', 'src/routes/*.js', 'src/swagger/schema.js']
+  apis: ['src/index.js', 'src/routes/*.js', 'src/swagger/*.schema.js']
 }
 
 const swaggerDocs = swaggerJsDoc(options)

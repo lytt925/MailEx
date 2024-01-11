@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import userController from '../controllers/user.controller.js'
+import jwtAuthentication from '../middleware/jwtAuthentication.js'
 const router = Router();
 
 /**
@@ -20,11 +21,11 @@ const router = Router();
  *             properties:
  *               username:
  *                 type: string
- *                 example: johndoe
+ *                 example: lytt925
  *               email:
  *                 type: string
  *                 format: email
- *                 example: johndoe@example.com
+ *                 example: ytli.tw@gmail.com
  *               password:
  *                 type: string
  *                 format: password
@@ -32,6 +33,98 @@ const router = Router();
  *               provider:
  *                 type: string
  *                 enum: [native, facebook, google, line]
+ *     responses:
+ *       200:
+ *         description: Successful signup
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 access_token:
+ *                   type: string
+ *                   description: Access token
+ *                 access_expired:
+ *                   type: string
+ *                   description: Access token expired time
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       description: User id
+ *                     provider: 
+ *                       type: string
+ *                       description: Authentication provider
+ *                     username:
+ *                       type: string
+ *                       description: User name
+ *                     email:
+ *                       type: string
+ *                       description: User email
+ *       400:
+ *         description: "Client Error"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Client message
+ *                   example: Invalid password
+ *       500:
+ *         description: "Server Error"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Server message
+ *                   example: Internal server error
+ */
+router.post('/signup', userController.signupUser);
+
+
+
+
+/**
+ * @swagger
+ * /user/login:
+ *   post:
+ *     tags:
+ *       - User
+ *     summary: Login user
+ *     description: Login user using email and password
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [password, provider]
+ *             properties:
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 example: Password123
+ *               provider:
+ *                 type: string
+ *                 enum: [native, facebook, google, line]
+ *             oneOf:
+ *               - required: [username]
+ *                 properties:
+ *                   username:
+ *                     type: string
+ *                     example: lytt925
+ *               - required: [email]
+ *                 properties:
+ *                   email:
+ *                     type: string
+ *                     format: email
+ *                     example: johndoe@example.com
  *     responses:
  *       200:
  *         description: Successful signup
@@ -58,12 +151,13 @@ const router = Router();
  *                          provider: 
  *                            type: string
  *                            description: Authentication provider
- *                          name:
+ *                          username:
  *                            type: string
  *                            description: User name
  *                          email:
  *                            type: string
- *                            description: User email
+ *                            description: User email 
+ * 
  *       400:
  *         description: "Client Error"
  *         content:
@@ -85,8 +179,78 @@ const router = Router();
  *                 error:
  *                   type: string
  *                   description: Server message
- *                   example: Internal server error
+ *                   example: Internal server error 
  */
-router.post('/signup', userController.signupUser);
+router.post('/login', userController.loginUser);
+
+
+
+
+/**
+ * @swagger
+ * /user/friends:
+ *   get:
+ *     tags:
+ *       - User
+ *     summary: get users' friends
+ *     description: 
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Get user profile successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 friends:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/User'
+ */
+router.get('/friends', jwtAuthentication, userController.getFriends);
+
+/**
+ * @swagger
+ * /user/usercards:
+ *   get:
+ *     tags:
+ *       - User
+ *     summary: get users' similar cards
+ *     description: 
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Get user profile successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 friends:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/User'
+ */
+router.get('/usercards', userController.getRecommendUsers);
+
+
+router.get('/profile', userController.getUserProfile);
+router.patch('/profile', jwtAuthentication, userController.updateUserProfile);
+
+router.post('/logout', (req, res) => {
+  // Overwrite the cookie with an expired one
+  res.cookie('userId', '', {
+    expires: new Date(0), // Set an expiration date in the past to delete the cookie
+    path: '/',
+    httpOnly: true,
+    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // Adjust based on environment
+    secure: process.env.NODE_ENV === 'production' // Use Secure only in production
+  });
+  res.status(200).json({ message: 'Logged out successfully' });
+});
+
 
 export default router

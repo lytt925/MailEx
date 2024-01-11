@@ -1,0 +1,70 @@
+
+/* .react-horizontal-scrolling-menu--scroll-container.rtl {
+    direction: rtl;
+} */
+
+
+/* styles.module.css */
+.scrollingMenu {
+    /* This class doesn't need to have any specific styles. */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: max-content;
+    --margin-child: 15px;
+}
+
+.scrollingMenu :global(.react-horizontal-scrolling-menu--wrapper) {
+    display: flex;
+    flex-direction: column;
+}
+
+.scrollingMenu :global(.react-horizontal-scrolling-menu--scroll-container) {
+        display: flex;
+        height: max-content;
+        overflow-y: hidden;
+        position: relative;
+        width: 100%;
+        padding: 10px 0px;
+}
+
+
+.scrollingMenu :global(.react-horizontal-scrolling-menu--inner-wrapper) {
+    display: flex;
+    overflow-y: hidden;
+}
+
+/* .scrollingMenu :global(.react-horizontal-scrolling-menu--header) {
+    width: 100%;
+}
+.scrollingMenu :global(.react-horizontal-scrolling-menu--footer) {
+    width: 100%;
+} */
+
+
+.scrollingMenu :global(.react-horizontal-scrolling-menu--arrow-left) {
+    display: flex;
+    width: 30px;
+}
+
+.scrollingMenu :global(.react-horizontal-scrolling-menu--arrow-right) {
+    display: flex;
+    flex-direction: row-reverse;
+    width: 30px;
+}
+
+.scrollingMenu :global(.react-horizontal-scrolling-menu--item) {
+  cursor: pointer;
+}
+
+.scrollingMenu :global(.react-horizontal-scrolling-menu--item:first-child) {
+  margin-left: 7.5px;
+}
+
+.scrollingMenu :global(.react-horizontal-scrolling-menu--item:last-child) {
+  margin-right: var(--margin-child);
+}
+  
+.separator {
+  padding: 0 var(--margin-child);
+}

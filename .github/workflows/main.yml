@@ -28,8 +28,8 @@ jobs:
       - name: Build and push
         run: |
           touch ./backend/.env.local
-          touch ./frontend/.env.local
-          docker-compose -f docker-compose.yml build
+          echo "${{ secrets.FRONTEND_ENV }}" > ./frontend/.env.local
+          docker-compose -f docker-compose.yml build --no-cache
           docker-compose -f docker-compose.yml push
 
   deploy:

@@ -1,17 +1,34 @@
-import { Homepage } from '@/components/Homepage/index'
-import { Navbar } from '@/components/Navbar'
-import styled from 'styled-components'
+import { Homepage } from '@/components/Homepage'
+import topics from '@/api/topics.json';
+import api from '@/api/serverSideApi';
 
-export default function MainPage() {
+export default function MainPage({ topics, users }) {
   return (
-    <MainWrapper>
-      <Navbar />
-      <Homepage />
-    </MainWrapper>
+    <Homepage topics={topics} users={users} />
   )
 }
 
-const MainWrapper = styled.div`
-  background-color: #FFFAF0;
-  min-height: 100vh
-`;
+const fetchUserCards = async (userId) => {
+  try {
+    const response = await api.get('/user/usercards', { params: { userId } });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return []
+  }
+}
+
+export async function getServerSideProps({ req, res }) {
+  const randomTopics = topics.sort(() => Math.random() - Math.random()).slice(0, 1);
+  // const cookies = req.headers.cookie;
+  // console.log("cookies", cookies);
+  const userId = req.cookies.userId;
+  const { users } = await fetchUserCards(userId);
+
+  return {
+    props: {
+      topics: randomTopics,
+      users: users
+    },
+  };
+}

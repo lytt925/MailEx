@@ -25,6 +25,288 @@
         }
       }
     },
+    "/mail": {
+      "get": {
+        "tags": [
+          "Mail"
+        ],
+        "summary": "Get user's mail",
+        "description": "Get the user's mail using access token",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "paging",
+            "in": "query",
+            "description": "Paging for request next page.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get user profile successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mails": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Mail"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "client error message",
+                      "example": "Invalid token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "server error message",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Mail"
+        ],
+        "summary": "Create a mail",
+        "description": "Create a mail using access token",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "sender_id",
+                  "receiver_id",
+                  "subject",
+                  "content"
+                ],
+                "properties": {
+                  "sender_id": {
+                    "type": "integer",
+                    "example": 3,
+                    "description": "Identifier for the sender of the mail."
+                  },
+                  "receiver_id": {
+                    "type": "integer",
+                    "example": 18,
+                    "description": "Identifier for the receiver of the mail."
+                  },
+                  "subject": {
+                    "type": "string",
+                    "example": "頂樓風好大",
+                    "maxLength": 50,
+                    "description": "Subject of the mail."
+                  },
+                  "content": {
+                    "type": "string",
+                    "example": "最近，我感到壓力非常大，這影響了我的學習和日常生活。\n\n我發現當我站在學校的頂樓時，那裡的風特別大，似乎能帶走我心中的一部分重擔。站在那裡，我會深深地呼吸，試圖讓自己平靜下來。但是，即使是這樣的短暫逃避，也不能徹底解決我的壓力問題。\n  \n我認為我的壓力來源於學業負擔和對未來的不確定感。我努力學習，但有時候感覺無法跟上。我擔心自己的表現不足以滿足期望，這讓我感到焦慮和沮喪。\n\n我希望能和您談談，或許您能提供一些指導或建議來幫助我應對這些壓力。我非常尊重您的意見，並且相信您的經驗和知識可以幫助我找到解決問題的方法。\n",
+                    "description": "Content of the mail."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "draft",
+                      "arrived",
+                      "sending"
+                    ],
+                    "default": "draft",
+                    "description": "Status of the mail."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Create the mail successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Created successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Missing receiver id"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "server error message",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mail/{friendId}": {
+      "get": {
+        "tags": [
+          "Mail"
+        ],
+        "summary": "Get user's mail associated with a friend",
+        "description": "Get the user's mail associated with a friend using access token",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "friendId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the friend"
+          },
+          {
+            "in": "query",
+            "name": "paging",
+            "required": false,
+            "description": "Paging for request next page.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get user profile successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "friend_profile": {
+                      "$ref": "#/components/schemas/User"
+                    },
+                    "mails": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Mail"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "client error message",
+                      "example": "Invalid token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "server error message",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/user/signup": {
       "post": {
         "tags": [
@@ -47,12 +329,12 @@
                 "properties": {
                   "username": {
                     "type": "string",
-                    "example": "johndoe"
+                    "example": "lytt925"
                   },
                   "email": {
                     "type": "string",
                     "format": "email",
-                    "example": "johndoe@example.com"
+                    "example": "ytli.tw@gmail.com"
                   },
                   "password": {
                     "type": "string",
@@ -69,6 +351,147 @@
                     ]
                   }
                 }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful signup",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string",
+                      "description": "Access token"
+                    },
+                    "access_expired": {
+                      "type": "string",
+                      "description": "Access token expired time"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "description": "User id"
+                        },
+                        "provider": {
+                          "type": "string",
+                          "description": "Authentication provider"
+                        },
+                        "username": {
+                          "type": "string",
+                          "description": "User name"
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "User email"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Client message",
+                      "example": "Invalid password"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Server message",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Login user",
+        "description": "Login user using email and password",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "password",
+                  "provider"
+                ],
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "Password123"
+                  },
+                  "provider": {
+                    "type": "string",
+                    "enum": [
+                      "native",
+                      "facebook",
+                      "google",
+                      "line"
+                    ]
+                  }
+                },
+                "oneOf": [
+                  {
+                    "required": [
+                      "username"
+                    ],
+                    "properties": {
+                      "username": {
+                        "type": "string",
+                        "example": "lytt925"
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "email"
+                    ],
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "johndoe@example.com"
+                      }
+                    }
+                  }
+                ]
               }
             }
           }
@@ -103,7 +526,7 @@
                               "type": "string",
                               "description": "Authentication provider"
                             },
-                            "name": {
+                            "username": {
                               "type": "string",
                               "description": "User name"
                             },
@@ -156,8 +579,166 @@
           }
         }
       }
+    },
+    "/user/friends": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "get users' friends",
+        "description": null,
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get user profile successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "friends": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/usercards": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "get users' similar cards",
+        "description": null,
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get user profile successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "friends": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
-  "components": {},
-  "tags": []
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Mail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier for the Mail."
+          },
+          "sender_id": {
+            "type": "integer",
+            "example": 3,
+            "description": "Identifier for the sender of the mail."
+          },
+          "receiver_id": {
+            "type": "integer",
+            "example": 18,
+            "description": "Identifier for the receiver of the mail."
+          },
+          "subject": {
+            "type": "string",
+            "example": "頂樓風好大",
+            "maxLength": 50,
+            "description": "Subject of the mail."
+          },
+          "content": {
+            "type": "string",
+            "example": "最近，我感到壓力非常大，這影響了我的學習和日常生活。\n\n我發現當我站在學校的頂樓時，那裡的風特別大，似乎能帶走我心中的一部分重擔。站在那裡，我會深深地呼吸，試圖讓自己平靜下來。但是，即使是這樣的短暫逃避，也不能徹底解決我的壓力問題。\n  \n我認為我的壓力來源於學業負擔和對未來的不確定感。我努力學習，但有時候感覺無法跟上。我擔心自己的表現不足以滿足期望，這讓我感到焦慮和沮喪。\n\n我希望能和您談談，或許您能提供一些指導或建議來幫助我應對這些壓力。我非常尊重您的意見，並且相信您的經驗和知識可以幫助我找到解決問題的方法。\n",
+            "description": "Content of the mail."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "arrived",
+              "sending"
+            ],
+            "default": "draft",
+            "description": "Status of the mail."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the mail was created."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the mail was updated."
+          },
+          "sent_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the mail was sent."
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier for the User.",
+            "example": 3
+          },
+          "username": {
+            "type": "string",
+            "description": "User name",
+            "example": "lytt925"
+          },
+          "profile_content": {
+            "type": "string",
+            "description": "User profile content",
+            "example": "I am a grad student."
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Mail",
+      "description": "Mails API"
+    }
+  ]
 }

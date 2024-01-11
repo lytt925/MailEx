@@ -1,42 +1,28 @@
-import styled from 'styled-components';
-import TextField from '@mui/material/TextField';
+import Link from 'next/link';
+import { TopicSection } from './TopicSection';
+import { UserCards } from './UserCards';
 
-//w-full py-12 flex justify-center
-const HomepageWrapper = styled.section`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  padding-top: 3rem/* 48px */;
-  padding-bottom: 3rem/* 48px */;
-`;
 
-const ContentWrapper = styled.div`
-  max-width: 100%;
-  display: grid;
-  gap: 1rem/* 16px */;
-  padding-left: 1rem/* 16px */;
-  padding-right: 1rem/* 16px */;
 
-  @media (min-width: 768px) {
-    gap: 2rem/* 32px */;
-    padding-left: 1.5rem/* 24px */;
-    padding-right: 1.5rem/* 24px */;
-  }
-`
-// Continue to create styled components for other elements
-export function Homepage() {
+export function Homepage({ topics, users }) {
+
   return (
-    <HomepageWrapper>
-      <ContentWrapper>
-        <TextField
-          id="outlined-search"
-          label="Search field"
-          type="search"
-          InputProps={{
-            // startAdornment: <InputAdornment position="start">kg</InputAdornment>,
-          }}
-        />
-      </ContentWrapper>
-    </HomepageWrapper>
+    <section className="h-full w-full py-4 flex justify-center">
+      <div className="flex flex-col max-w-full w-[910px] h-full justify-between">
+        <div className='p-4 border-b border-gray-300'>
+          <h1 className="text-2xl font-semibold ml-10 mb-2">Find a Friend</h1>
+          <UserCards users={users} />
+          <div className="flex justify-end">
+            <Link href='/explore' className="text-base font-semibold mr-10 my-2 text-right text-app-primary cursor-pointer hover:text-app-primary-light">
+              See More
+            </Link>
+          </div>
+        </div>
+        <div className='flex w-full grow basis-[550px] justify-center gap-10 py-4 px-[50px] pt-8'>
+          <TopicSection topics={topics} users={users} />
+        </div>
+      </div>
+    </section>
   );
 }
+
